@@ -1,0 +1,9 @@
+[submodule "tools/polly"]
+	path = tools/polly
+	url = https://github.com/ruslo/polly
+[submodule "tools/gate"]
+	path = tools/gate
+	url = https://github.com/hunter-packages/gate.git
+[submodule "third-party/gtest"]
+	path = third-party/gtest
+	url = https://github.com/google/googletest
