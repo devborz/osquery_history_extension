@@ -35,4 +35,4 @@ _install/
 *.app
 
 # Builds
-_builds/*
+_build/*

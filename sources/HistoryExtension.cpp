@@ -7,7 +7,8 @@ void HistoryExtension::startListening() {
 }
 
 void HistoryExtension::getConsoleHistory(const Period& period) {
-    std::string homePath = getenv("USER");
+    std::string homePath = getenv("HOME");
+    std::cout << homePath;
     std::ifstream bashHistory(homePath + "/.bash_history");
     if (bashHistory.is_open()) {
         while (!bashHistory.eof()) {
