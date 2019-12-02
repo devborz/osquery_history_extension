@@ -5,7 +5,8 @@
 
 enum Command {
     filesystem,
-    commandline
+    commandline,
+    help
 };
 
 class Commands {

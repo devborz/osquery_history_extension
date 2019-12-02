@@ -9,4 +9,19 @@
 
 * История командной строки
 - Недавно измененные файлы
-+ Последние действия
++ Недавно запущенные программы
+
+### Инструкция
+```
+>>>  help
+
+Commands:
+ filesystem ${PATH_TO_DIRECTORY} ${PERIOD} - give list of recently changed files
+ commandline ${PERIOD} - give history of command line
+Periods:
+ -h -- last hour
+ -d -- last day
+ -w -- last week
+ -m -- last month
+ -a -- all*
+```
