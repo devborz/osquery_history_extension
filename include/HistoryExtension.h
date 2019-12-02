@@ -1,21 +1,22 @@
 #pragma once
 
 #include <fstream>
+#include <chrono>
 #include <iostream>
 #include <string>
+#include <stdlib.h>
+#include <boost/filesystem.hpp>
+#include <vector>
+#include "files.h"
+#include "period.h"
+#include "command.h"
+#include <ctime>
 
-enum Period {
-    LAST_HOUR,
-    LAST_DAY,
-    LAST_WEEK,
-    LAST_MONTH,
-    ALL
-};
+namespace filesys = boost::filesystem;
 
 class HistoryExtension {
 private:
-    //const ofstream* out;
-    std::string username;
+    const std::string username = getenv("USER");
 
 public:
     static void startListening();
@@ -24,5 +25,6 @@ public:
 
     static void getActionsHistory(const Period& period);
 
-    static void getFilesystemHistory(const Period& period);
+    static void getFilesystemHistory(const filesys::path& pathToDir,
+                                     const Period& period);
 };
