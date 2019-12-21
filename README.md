@@ -23,5 +23,5 @@ Periods:
  -d -- last day
  -w -- last week
  -m -- last month
- -a -- all*
+ -a -- all
 ```

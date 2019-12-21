@@ -64,6 +64,7 @@ void HistoryExtension::startListening() {
                          << " ${PERIOD} - give list of recently changed files"
                          << "\n commandline ${PERIOD} - give history of "
                          << "command line"
+                         << "\n "
                          << "\nPeriods:\n -h -- last hour\n -d -- last day"
                          << "\n -w -- last week\n -m -- last month\n -a -- all";
                     break;
