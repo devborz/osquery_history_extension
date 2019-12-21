@@ -31,9 +31,12 @@ add_library(command STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/command.cpp)
 add_library(period STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/period.cpp)
+add_library(process INTERFACE
+)
 
 add_executable(extension
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/main.cpp)
+
 
 target_include_directories(HistoryExtension PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -51,7 +54,10 @@ target_include_directories(period PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
+target_include_directories(process
+  INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/process/include
+)
 
 target_link_libraries(files period Boost::filesystem Boost::system)
-target_link_libraries(HistoryExtension files period command Boost::filesystem Boost::system)
+target_link_libraries(HistoryExtension files period command Boost::filesystem Boost::system process)
 target_link_libraries(extension HistoryExtension)
