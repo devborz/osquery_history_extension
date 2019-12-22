@@ -9,19 +9,31 @@
 
 * История командной строки
 - Недавно измененные файлы
-+ Недавно запущенные программы
 
 ### Инструкция
 ```
->>>  help
+>>> _build/extension --help
 
-Commands:
- filesystem ${PATH_TO_DIRECTORY} ${PERIOD} - give list of recently changed files
- commandline ${PERIOD} - give history of command line
+Options:
+  --help                give list of recently changed files
+  --filesystem          outputs filesystem's history
+  --commandline         outputs commandline's history
+  --path arg            add path to directory
+  --period arg          add period of history
+
+
 Periods:
- -h -- last hour
- -d -- last day
- -w -- last week
- -m -- last month
- -a -- all
+  --period=h    last hour
+  --period=d    last day
+  --period=w    last week
+  --period=m    last month
+  --period=a    all time
 ```
+### Tasks
+
+- [x] Настроить program_options
+- [x] Реализовать получение истории командной строки
+- [x] Реализовать получение истории изменения файлов
+- [x] Реализовать сортировку по дате
+- [ ] Реализовать проверку настройки bash_history на сохранение времени и директории
+- [ ] Интеграция в osquery
