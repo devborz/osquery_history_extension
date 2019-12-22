@@ -20,62 +20,45 @@ void HistoryExtension::startListening(int argc, char* argv[]) {
 
     Command command = Commands::parse(command_);
 
+    std::string path_;
+
+    if (vm.count("path")) {
+        path_ = vm["path"].as<std::string>();
+    }
+    else {
+        path_ = getenv("HOME");
+    }
+
+    filesys::path pathToDir(path_);
+
+    if(!exists(pathToDir)) {
+        notifyPathError(path_);
+        return;
+    }
+
+    std::string period_;
+
+    if (vm.count("period")) {
+        period_ = vm["period"].as<std::string>();
+    }
+    else {
+        period_ = "h";
+    }
+
+    Period period = Periods::parse(period_);
+    bool isValid = isValidPeriod(period);
+
+    if (!isValid) {
+        HistoryExtension::notifyPeriodError(period_);
+        return;
+    }
+
     switch (command) {
         case filesystem : {
-
-            std::string path_;
-            if (vm.count("path")) {
-                path_ = vm["path"].as<std::string>();
-            }
-            else {
-                path_ = getenv("HOME");
-            }
-
-            filesys::path pathToDir(path_);
-
-            if(!exists(pathToDir)) {
-                notifyPathError(path_);
-                break;
-            }
-
-            std::string period_;
-
-            if (vm.count("path")) {
-                period_ = vm["period"].as<std::string>();
-            }
-            else {
-                period_ = "h";
-            }
-
-            Period period = Periods::parse(period_);
-            bool isValid = isValidPeriod(period);
-
-            if (!isValid) {
-                HistoryExtension::notifyPeriodError(period_);
-                break;
-            }
-
             getFilesystemHistory(pathToDir, period);
             break;
         }
         case commandline : {
-            std::string period_;
-
-            if (vm.count("path")) {
-                period_ = vm["period"].as<std::string>();
-            }
-            else {
-                period_ = "h";
-            }
-
-            Period period = Periods::parse(period_);
-            bool isValid = isValidPeriod(period);
-
-            if (!isValid) {
-                HistoryExtension::notifyPeriodError(period_);
-                break;
-            }
-
             getConsoleHistory(period);
             break;
         }
