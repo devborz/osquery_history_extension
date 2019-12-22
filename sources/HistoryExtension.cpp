@@ -1,79 +1,90 @@
 #include "HistoryExtension.h"
 
-void HistoryExtension::startListening() {
-    while(true) {
-        std::string command_;
-        std::cout << "\n>>> ";
-        std::cin >> command_;
-        if (!command_.empty()) {
-            Command command = Commands::parse(command_);
+void HistoryExtension::startListening(int argc, char* argv[]) {
+    options_description desc;
+    options_description parameters;
 
-            switch (command) {
-                case filesystem : {
-                    std::string path_;
-                    std::cin >> path_;
+    getCommand(desc, parameters);
+    variables_map vm;
+    store(parse_command_line(argc, argv, desc), vm);
+    notify(vm);
 
-                    if (path_.empty()) {
-                        path_ = getenv("HOME");
-                    }
-                    filesys::path pathToDir(path_);
 
-                    std::string period_;
-                    std::cin >> period_;
-                    if (period_.empty()) {
-                        period_ = "-h";
-                    }
+    std::string command_;
+    if (vm.count("filesystem"))
+        command_ = "filesystem";
+    else if (vm.count("commandline"))
+        command_ = "commandline";
+    else if (vm.count("help"))
+        command_ = "help";
 
-                    Period period = Periods::parse(period_);
-                    bool isValid = (period == LAST_HOUR) || (period == LAST_DAY)
-                              || (period == LAST_WEEK) || (period == LAST_MONTH)
-                              ||(period == ALL);
+    Command command = Commands::parse(command_);
 
-                    if (!isValid) {
-                        std::cerr << "\'" << period
-                                  << "\' is not period. See 'help'";
-                        break;
-                    }
+    switch (command) {
+        case filesystem : {
 
-                    getFilesystemHistory(pathToDir, period);
-                    break;
-                }
-                case commandline : {
-                    std::string period_;
-                    std::cin >> period_;
-                    if (period_.empty()) {
-                        period_ = "-h";
-                    }
-
-                    Period period = Periods::parse(period_);
-                    bool isValid = (period == LAST_HOUR) || (period == LAST_DAY)
-                              || (period == LAST_WEEK) || (period == LAST_MONTH)
-                              ||(period == ALL);
-
-                    if (!isValid) {
-                        std::cerr << "\'" << period
-                                  << "\' is not period. See 'help'";
-                        break;
-                    }
-
-                    getConsoleHistory(period);
-                    break;
-                }
-                case help : {
-                    std::cout << "\nCommands:\n filesystem ${PATH_TO_DIRECTORY}"
-                         << " ${PERIOD} - give list of recently changed files"
-                         << "\n commandline ${PERIOD} - give history of "
-                         << "command line"
-                         << "\n "
-                         << "\nPeriods:\n -h -- last hour\n -d -- last day"
-                         << "\n -w -- last week\n -m -- last month\n -a -- all";
-                    break;
-                }
-                default : {
-                    std::cerr << "\'" << command
-                              << "\' is not command. See 'help'";
-                }
+            std::string path_;
+            if (vm.count("path")) {
+                path_ = vm["path"].as<std::string>();
             }
+            else {
+                path_ = getenv("HOME");
+            }
+
+            filesys::path pathToDir(path_);
+
+            if(!exists(pathToDir)) {
+                notifyPathError(path_);
+                break;
+            }
+
+            std::string period_;
+
+            if (vm.count("path")) {
+                period_ = vm["period"].as<std::string>();
+            }
+            else {
+                period_ = "h";
+            }
+
+            Period period = Periods::parse(period_);
+            bool isValid = isValidPeriod(period);
+
+            if (!isValid) {
+                HistoryExtension::notifyPeriodError(period_);
+                break;
+            }
+
+            getFilesystemHistory(pathToDir, period);
+            break;
+        }
+        case commandline : {
+            std::string period_;
+
+            if (vm.count("path")) {
+                period_ = vm["period"].as<std::string>();
+            }
+            else {
+                period_ = "h";
+            }
+
+            Period period = Periods::parse(period_);
+            bool isValid = isValidPeriod(period);
+
+            if (!isValid) {
+                HistoryExtension::notifyPeriodError(period_);
+                break;
+            }
+
+            getConsoleHistory(period);
+            break;
+        }
+        case help : {
+            HistoryExtension::getHelp(desc);
+            break;
+        }
+        default : {
+            HistoryExtension::notifyCommandError(command_);
         }
     }
 }
@@ -95,13 +106,14 @@ void HistoryExtension::getConsoleHistory(const Period& period) {
     }
 }
 
-void HistoryExtension::getActionsHistory(const Period& period) {
+/*void HistoryExtension::getActionsHistory(const Period& period) {
 
-}
+}*/
 
 void HistoryExtension::getFilesystemHistory(const filesys::path& pathToDir,
                                         const Period& period) {
     std::vector<std::pair<filesys::path, std::time_t>> recentlyChangedFiles;
+
     if (exists(pathToDir)) {
         for (const filesys::directory_entry& pathToObj :
              filesys::recursive_directory_iterator(pathToDir)) {
@@ -118,6 +130,48 @@ void HistoryExtension::getFilesystemHistory(const filesys::path& pathToDir,
         Files::sortByTime(recentlyChangedFiles);
         Files::print(recentlyChangedFiles);
     }
+}
 
+void HistoryExtension::getCommand(options_description& desc,
+                                               options_description& parameters) {
+    desc.add_options()
+        ("help", "give list of recently changed files")
+        ("filesystem", "outputs filesystem's history")
+        ("commandline", "outputs commandline's history")
+        ("path", value<std::string>(), "add path to directory")
+        ("period", value<std::string>(), "add period of history")
+    ;
+}
 
+void HistoryExtension::notifyCommandError(const std::string& invalidCommand) {
+    std::cerr << "Command \'" << invalidCommand
+              << "\' does not exist. See 'help'";
+}
+
+void HistoryExtension::notifyPathError(const std::string& invalidPath) {
+    std::cerr << "Path \'" << invalidPath
+              << "\' does not exist. See 'help'";
+}
+
+void HistoryExtension::notifyPeriodError(const std::string& invalidPeriod) {
+    std::cerr << "Period \'" << invalidPeriod
+              << "\' does not exist. See 'help'";
+}
+
+bool HistoryExtension::isValidPeriod(const Period& period) {
+    bool isValid = (period == LAST_HOUR) || (period == LAST_DAY)
+              || (period == LAST_WEEK) || (period == LAST_MONTH)
+              ||(period == ALL);
+
+    return isValid;
+}
+
+void HistoryExtension::getHelp(options_description& desc) {
+    std::cout << "\nOptions:\n" << desc << std::endl;
+
+    std::cout << "\nPeriods:\n" << std::setw(12) << "--period=h" << "\tlast hour\n"
+                                << std::setw(12) << "--period=d" << "\tlast day\n"
+                                << std::setw(12) << "--period=w" << "\tlast week\n"
+                                << std::setw(12) << "--period=m" << "\tlast month\n"
+                                << std::setw(12) << "--period=a" << "\tall time\n";
 }

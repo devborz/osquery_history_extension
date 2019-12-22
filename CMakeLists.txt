@@ -18,8 +18,8 @@ huntergate(
 
 project(HistoryExtension)
 
-hunter_add_package(Boost COMPONENTS system filesystem)
-find_package(Boost CONFIG REQUIRED system filesystem)
+hunter_add_package(Boost COMPONENTS system filesystem program_options)
+find_package(Boost CONFIG REQUIRED system filesystem program_options)
 
 
 
@@ -59,5 +59,6 @@ target_include_directories(process
 )
 
 target_link_libraries(files period Boost::filesystem Boost::system)
-target_link_libraries(HistoryExtension files period command Boost::filesystem Boost::system process)
+target_link_libraries(HistoryExtension files period command Boost::filesystem
+Boost::system Boost::program_options)
 target_link_libraries(extension HistoryExtension)
