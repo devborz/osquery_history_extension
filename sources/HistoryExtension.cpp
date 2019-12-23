@@ -17,6 +17,11 @@ void HistoryExtension::listen(int argc, char* argv[]) {
     else if (vm.count("help"))
         command_ = "help";
 
+    if (command_.empty()) {
+        HistoryExtension::notifyCommandError(command_);
+        return;
+    }
+
     Command command = Commands::parse(command_);
 
     std::string path_;
@@ -64,6 +69,7 @@ void HistoryExtension::listen(int argc, char* argv[]) {
             break;
         }
         case commandline : {
+            std::cout << "here";
             getConsoleHistory(pathToDir, period);
             break;
         }
@@ -190,17 +196,17 @@ void HistoryExtension::getCommand(bpo::options_description& desc) {
 
 void HistoryExtension::notifyCommandError(const std::string& invalidCommand) {
     std::cerr << "Command \'" << invalidCommand
-              << "\' does not exist. See 'help'";
+              << "\' does not exist. See 'help'\n";
 }
 
 void HistoryExtension::notifyPathError(const std::string& invalidPath) {
     std::cerr << "Path \'" << invalidPath
-              << "\' does not exist. See 'help'";
+              << "\' does not exist. See 'help'\n";
 }
 
 void HistoryExtension::notifyPeriodError(const std::string& invalidPeriod) {
     std::cerr << "Period \'" << invalidPeriod
-              << "\' does not exist. See 'help'";
+              << "\' does not exist. See 'help'\n";
 }
 
 bool HistoryExtension::isValidPeriod(const Period& period) {
