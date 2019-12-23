@@ -4,11 +4,9 @@
 #include <iomanip>
 #include <string>
 #include <stdlib.h>
-#include <async++.h>
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
 #include <fstream>
-#include <signal.h>
 #include <vector>
 #include <thread>
 #include "files.h"
