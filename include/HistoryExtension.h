@@ -8,7 +8,6 @@
 #include <boost/program_options.hpp>
 #include <fstream>
 #include <vector>
-#include <thread>
 #include "files.h"
 #include "period.h"
 #include "command.h"
