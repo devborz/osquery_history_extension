@@ -4,6 +4,3 @@
 [submodule "tools/gate"]
 	path = tools/gate
 	url = https://github.com/cpp-pm/gate
-[submodule "process"]
-	path = process
-	url = https://github.com/boostorg/process

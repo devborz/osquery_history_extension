@@ -7,9 +7,6 @@
 #include <async++.h>
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
-#include <boost/process/child.hpp>
-#include <boost/process/cmd.hpp>
-#include <boost/process/extend.hpp>
 #include <fstream>
 #include <signal.h>
 #include <vector>
@@ -19,8 +16,6 @@
 #include "command.h"
 #include <ctime>
 
-using namespace boost::process;
-using namespace boost::process::extend;
 namespace bfs = boost::filesystem;
 namespace bpo = boost::program_options;
 
