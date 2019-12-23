@@ -183,12 +183,23 @@ void HistoryExtension::getHelp(bpo::options_description& desc) {
                                             << "--period=m" << "\tlast month\n"
                               << std::setw(12)
                                             << "--period=a" << "\tall time\n";
-                                                                                    ;
 }
 
 void HistoryExtension::checkBashConfig() {
     std::string homePath = getenv("HOME");
-    std::string config = "export PROMPT_COMMAND=\'if [ \"$(id -u)\" -ne 0 ]; then echo \"$(date \"+%Y-%m-%d.%H:%M:%S\") $(pwd) $(history 1)\" >> ~/bash-history.log; fi\'";
+    std::string config;
+
+    std::ifstream bashConfig("config/config.txt");
+    if (bashConfig.is_open()) {
+        std::string line;
+        std::getline(bashConfig, line);
+        config = line;
+
+        bashConfig.close();
+    }
+    else {
+        throw std::logic_error("File wasn't found");
+    }
 
     std::string profile;
     if (bfs::exists(homePath + "/.profile")) {
