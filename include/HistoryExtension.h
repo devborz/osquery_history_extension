@@ -20,9 +20,6 @@ class HistoryExtension {
 private:
     const std::string username = getenv("USER");
 
-public:
-    static void listen(int, char**);
-
     static void getConsoleHistory(const bfs::path&, const Period&);
 
     static void getFilesystemHistory(const bfs::path&, const Period&);
@@ -40,4 +37,7 @@ public:
     static void checkBashConfig();
 
     static bool isValidPeriod(const Period&);
+    
+public:
+    static void listen(int, char**);
 };
