@@ -20,10 +20,11 @@ class HistoryExtension {
 private:
     const std::string username = getenv("USER");
 
-    static void getConsoleHistory(const bfs::path&, const Period&);
+    static void getConsoleHistory(const bfs::path&, const Period&,
+                                  const bool&);
 
     static void getFilesystemHistory(const bfs::path&, const Period&,
-                                     const bool& isSearchRecursive);
+                                     const bool&);
 
     static void getCommand(bpo::options_description&);
 

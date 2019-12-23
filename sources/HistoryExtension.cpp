@@ -69,8 +69,7 @@ void HistoryExtension::listen(int argc, char* argv[]) {
             break;
         }
         case commandline : {
-            std::cout << "here";
-            getConsoleHistory(pathToDir, period);
+            getConsoleHistory(pathToDir, period, isSearchRecursive);
             break;
         }
         case help : {
@@ -84,7 +83,8 @@ void HistoryExtension::listen(int argc, char* argv[]) {
 }
 
 void HistoryExtension::getConsoleHistory(const bfs::path& path,
-                                         const Period& period) {
+                                         const Period& period,
+                                         const bool& isSearchRecursive) {
 
     std::time_t period_ = Periods::parseTime(period);
 
@@ -113,8 +113,16 @@ void HistoryExtension::getConsoleHistory(const bfs::path& path,
                     std::pair<bfs::path, std::time_t> childpair(path_, time);
                     std::pair<std::string, std::pair<bfs::path,
                                 std::time_t>> pair(command, childpair);
-                    if (Commands::isChildPath(path, childpair.first)) {
-                        events.push_back(pair);
+                    if (isSearchRecursive) {
+                        if (Commands::isChildPath(path, childpair.first)) {
+                            events.push_back(pair);
+                        }
+                    }
+                    else {
+                        if (path.relative_path() ==
+                            childpair.first.relative_path()) {
+                            events.push_back(pair);
+                        }
                     }
                 }
             }
