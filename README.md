@@ -20,6 +20,7 @@ Options:
   --commandline         outputs commandline's history
   --path arg            add path to directory
   --period arg          add period of history
+  --r                   search recursively
 
 
 Periods:
