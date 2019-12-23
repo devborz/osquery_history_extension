@@ -1,13 +1,12 @@
 #include "HistoryExtension.h"
 
-void HistoryExtension::startListening(int argc, char* argv[]) {
-    options_description desc;
-    options_description parameters;
+void HistoryExtension::listen(int argc, char* argv[]) {
+    bpo::options_description desc;
 
-    getCommand(desc, parameters);
-    variables_map vm;
-    store(parse_command_line(argc, argv, desc), vm);
-    notify(vm);
+    getCommand(desc);
+    bpo::variables_map vm;
+    bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
+    bpo::notify(vm);
 
 
     std::string command_;
@@ -29,9 +28,9 @@ void HistoryExtension::startListening(int argc, char* argv[]) {
         path_ = getenv("HOME");
     }
 
-    filesys::path pathToDir(path_);
+    bfs::path pathToDir(path_);
 
-    if(!exists(pathToDir)) {
+    if(!bfs::exists(pathToDir)) {
         notifyPathError(path_);
         return;
     }
@@ -59,7 +58,7 @@ void HistoryExtension::startListening(int argc, char* argv[]) {
             break;
         }
         case commandline : {
-            getConsoleHistory(period);
+            getConsoleHistory(pathToDir, period);
             break;
         }
         case help : {
@@ -72,36 +71,59 @@ void HistoryExtension::startListening(int argc, char* argv[]) {
     }
 }
 
-void HistoryExtension::getConsoleHistory(const Period& period) {
-    std::string homePath = getenv("HOME");
-    std::ifstream bashHistory(homePath + "/.bash_history");
+void HistoryExtension::getConsoleHistory(const bfs::path& path,
+                                         const Period& period) {
 
+    std::time_t period_ = Periods::parseTime(period);
+
+    std::string homePath = getenv("HOME");
+
+    std::ifstream bashHistory(homePath + "/bash-history.log");
+    std::vector<std::pair<std::string, std::pair<bfs::path,
+                std::time_t>>> events;
     if (bashHistory.is_open()) {
         while (!bashHistory.eof()) {
+            std::time_t time;
+            bfs::path path_;
             std::string command;
-            std::getline(bashHistory, command);
-            std::cout << command << std::endl;
+            std::string event;
+
+            std::getline(bashHistory, event);
+            if (event.length() >= 18) {
+                Commands::parseEvent(event, command, path_, time);
+
+                std::time_t now = std::chrono::system_clock::to_time_t(
+                                  std::chrono::system_clock::now()
+                                  );
+
+                if (now - time <= period_) {
+
+                    std::pair<bfs::path, std::time_t> childpair(path_, time);
+                    std::pair<std::string, std::pair<bfs::path,
+                                std::time_t>> pair(command, childpair);
+
+                    events.push_back(pair);
+                }
+            }
         }
         bashHistory.close();
+
+        Commands::print(events);
     }
     else {
         throw std::logic_error("File wasn't found");
     }
 }
 
-/*void HistoryExtension::getActionsHistory(const Period& period) {
-
-}*/
-
-void HistoryExtension::getFilesystemHistory(const filesys::path& pathToDir,
+void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir,
                                         const Period& period) {
-    std::vector<std::pair<filesys::path, std::time_t>> recentlyChangedFiles;
+    std::vector<std::pair<bfs::path, std::time_t>> recentlyChangedFiles;
 
-    if (exists(pathToDir)) {
-        for (const filesys::directory_entry& pathToObj :
-             filesys::recursive_directory_iterator(pathToDir)) {
+    if (bfs::exists(pathToDir)) {
+        for (const bfs::directory_entry& pathToObj :
+             bfs::recursive_directory_iterator(pathToDir)) {
 
-            if (filesys::is_regular_file(pathToObj)) {
+            if (bfs::is_regular_file(pathToObj)) {
                 bool isRecentlyChanged =
                     Files::checkIsRecentlyChanged(pathToObj, period);
 
@@ -115,14 +137,13 @@ void HistoryExtension::getFilesystemHistory(const filesys::path& pathToDir,
     }
 }
 
-void HistoryExtension::getCommand(options_description& desc,
-                                               options_description& parameters) {
+void HistoryExtension::getCommand(bpo::options_description& desc) {
     desc.add_options()
         ("help", "give list of recently changed files")
         ("filesystem", "outputs filesystem's history")
         ("commandline", "outputs commandline's history")
-        ("path", value<std::string>(), "add path to directory")
-        ("period", value<std::string>(), "add period of history")
+        ("path", bpo::value<std::string>(), "add path to directory")
+        ("period", bpo::value<std::string>(), "add period of history")
     ;
 }
 
@@ -149,12 +170,60 @@ bool HistoryExtension::isValidPeriod(const Period& period) {
     return isValid;
 }
 
-void HistoryExtension::getHelp(options_description& desc) {
+void HistoryExtension::getHelp(bpo::options_description& desc) {
     std::cout << "\nOptions:\n" << desc << std::endl;
 
-    std::cout << "\nPeriods:\n" << std::setw(12) << "--period=h" << "\tlast hour\n"
-                                << std::setw(12) << "--period=d" << "\tlast day\n"
-                                << std::setw(12) << "--period=w" << "\tlast week\n"
-                                << std::setw(12) << "--period=m" << "\tlast month\n"
-                                << std::setw(12) << "--period=a" << "\tall time\n";
+    std::cout << "Periods:\n" << std::setw(12)
+                                            << "--period=h" << "\tlast hour\n"
+                              << std::setw(12)
+                                            << "--period=d" << "\tlast day\n"
+                              << std::setw(12)
+                                            << "--period=w" << "\tlast week\n"
+                              << std::setw(12)
+                                            << "--period=m" << "\tlast month\n"
+                              << std::setw(12)
+                                            << "--period=a" << "\tall time\n";
+                                                                                    ;
+}
+
+void HistoryExtension::checkBashConfig() {
+    std::string homePath = getenv("HOME");
+    std::string config = "export PROMPT_COMMAND=\'if [ \"$(id -u)\" -ne 0 ]; then echo \"$(date \"+%Y-%m-%d.%H:%M:%S\") $(pwd) $(history 1)\" >> ~/bash-history.log; fi\'";
+
+    std::string profile;
+    if (bfs::exists(homePath + "/.profile")) {
+        profile = "/.profile";
+    }
+    else {
+        profile = "/.bash_profile";
+    }
+    std::ifstream bashProfile(homePath + profile);
+    bool haveConfig = false;
+
+    if (bashProfile.is_open()) {
+        while (!bashProfile.eof()) {
+            std::string line;
+            std::getline(bashProfile, line);
+            if (line == config) {
+                haveConfig = true;
+            }
+        }
+        bashProfile.close();
+    }
+    else {
+        throw std::logic_error("File wasn't found");
+    }
+
+    if (!haveConfig) {
+        std::ofstream bashProfile(homePath + profile);
+        if (bashProfile.is_open()) {
+            while (!bashProfile.eof()) {
+                bashProfile << config;
+            }
+            bashProfile.close();
+        }
+        else {
+            throw std::logic_error("File wasn't found");
+        }
+    }
 }

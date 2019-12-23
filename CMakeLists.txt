@@ -18,8 +18,10 @@ huntergate(
 
 project(HistoryExtension)
 
-hunter_add_package(Boost COMPONENTS system filesystem program_options)
-find_package(Boost CONFIG REQUIRED system filesystem program_options)
+hunter_add_package(Async++)
+hunter_add_package(Boost COMPONENTS system filesystem program_options regex)
+find_package(Async++ CONFIG REQUIRED)
+find_package(Boost CONFIG REQUIRED system filesystem program_options regex)
 
 
 
@@ -55,10 +57,12 @@ target_include_directories(period PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 target_include_directories(process
-  INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/process/include
+  INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/process/include/
 )
 
+target_link_libraries(command Boost::filesystem Boost::system)
 target_link_libraries(files period Boost::filesystem Boost::system)
-target_link_libraries(HistoryExtension files period command Boost::filesystem
-Boost::system Boost::program_options)
+target_link_libraries(HistoryExtension files period command process
+Boost::filesystem Boost::system Boost::program_options
+Boost::regex Async++::Async++)
 target_link_libraries(extension HistoryExtension)

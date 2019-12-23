@@ -1,36 +1,41 @@
 #pragma once
-
-#include <fstream>
 #include <chrono>
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <stdlib.h>
+#include <async++.h>
 #include <boost/filesystem.hpp>
 #include <boost/program_options.hpp>
+#include <boost/process/child.hpp>
+#include <boost/process/cmd.hpp>
+#include <boost/process/extend.hpp>
+#include <fstream>
+#include <signal.h>
 #include <vector>
+#include <thread>
 #include "files.h"
 #include "period.h"
 #include "command.h"
 #include <ctime>
 
-namespace filesys = boost::filesystem;
-using namespace boost::program_options;
+using namespace boost::process;
+using namespace boost::process::extend;
+namespace bfs = boost::filesystem;
+namespace bpo = boost::program_options;
 
 class HistoryExtension {
 private:
     const std::string username = getenv("USER");
 
 public:
-    static void startListening(int, char**);
+    static void listen(int, char**);
 
-    static void getConsoleHistory(const Period&);
+    static void getConsoleHistory(const bfs::path&, const Period&);
 
-    //static void getActionsHistory(const Period&);
+    static void getFilesystemHistory(const bfs::path&, const Period&);
 
-    static void getFilesystemHistory(const filesys::path&, const Period&);
-
-    static void getCommand(options_description&, options_description&);
+    static void getCommand(bpo::options_description&);
 
     static void notifyCommandError(const std::string&);
 
@@ -38,7 +43,9 @@ public:
 
     static void notifyPeriodError(const std::string&);
 
-    static void getHelp(options_description& desc);
+    static void getHelp(bpo::options_description& desc);
+
+    static void checkBashConfig();
 
     static bool isValidPeriod(const Period&);
 };

@@ -49,7 +49,7 @@ void Files::sortByTime(std::vector<std::pair<fs::path, std::time_t>>&
 void Files::print(std::vector<std::pair<fs::path, std::time_t>>&
             recentlyChangedFiles) {
     for (const std::pair<fs::path, std::time_t>& file : recentlyChangedFiles) {
-        std::cout << std::asctime(std::localtime(&file.second)) <<
-                     " " << file.first << std::endl;
+        std::cout << std::put_time(std::localtime(&file.second), "%c %Z") <<
+                     "\t" << file.first << std::endl;
     }
 }

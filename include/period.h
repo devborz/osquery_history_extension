@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+#include <ctime>
 #include <map>
 #include <string>
 
@@ -13,5 +15,7 @@ enum Period {
 
 class Periods {
 public:
-    static Period parse(std::string period);
+    static Period parse(const std::string& period);
+
+    static std::time_t parseTime(const Period& period);
 };
