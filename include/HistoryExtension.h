@@ -22,11 +22,14 @@ private:
 
     static void getConsoleHistory(const bfs::path&, const Period&);
 
-    static void getFilesystemHistory(const bfs::path&, const Period&);
+    static void getFilesystemHistory(const bfs::path&, const Period&,
+                                     const bool& isSearchRecursive);
 
     static void getCommand(bpo::options_description&);
 
     static void notifyCommandError(const std::string&);
+
+    static void notify(const std::string&);
 
     static void notifyPathError(const std::string&);
 
@@ -37,7 +40,6 @@ private:
     static void checkBashConfig();
 
     static bool isValidPeriod(const Period&);
-    
 public:
     static void listen(int, char**);
 };

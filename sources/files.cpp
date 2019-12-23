@@ -46,10 +46,26 @@ void Files::sortByTime(std::vector<std::pair<fs::path, std::time_t>>&
     }
 }
 
-void Files::print(std::vector<std::pair<fs::path, std::time_t>>&
-            recentlyChangedFiles) {
+void Files::print(const std::vector<std::pair<fs::path, std::time_t>>&
+                 recentlyChangedFiles,
+                 const fs::path& headPath) {
     for (const std::pair<fs::path, std::time_t>& file : recentlyChangedFiles) {
         std::cout << std::put_time(std::localtime(&file.second), "%c %Z") <<
-                     "\t" << file.first << std::endl;
+                     "\t" << Files::getRealtivePath(headPath, file.first) <<
+                     std::endl;
     }
+}
+
+fs::path Files::getRealtivePath(const fs::path& parentPath,
+                                const fs::path& childPath) {
+
+    std::string parent = parentPath.relative_path().string();
+    std::string child  = childPath.relative_path().string();
+
+    std::string difference = child.substr(parent.length(),
+                                              child.length() - 1);
+
+    fs::path relativePath = fs::path(difference);
+
+    return relativePath;
 }

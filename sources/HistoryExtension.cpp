@@ -3,7 +3,7 @@
 void HistoryExtension::listen(int argc, char* argv[]) {
     bpo::options_description desc;
 
-    getCommand(desc);
+    HistoryExtension::getCommand(desc);
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
     bpo::notify(vm);
@@ -52,9 +52,15 @@ void HistoryExtension::listen(int argc, char* argv[]) {
         return;
     }
 
+    bool isSearchRecursive = false;
+
+    if (vm.count("r")) {
+        isSearchRecursive = true;
+    }
+
     switch (command) {
         case filesystem : {
-            getFilesystemHistory(pathToDir, period);
+            getFilesystemHistory(pathToDir, period, isSearchRecursive);
             break;
         }
         case commandline : {
@@ -101,14 +107,20 @@ void HistoryExtension::getConsoleHistory(const bfs::path& path,
                     std::pair<bfs::path, std::time_t> childpair(path_, time);
                     std::pair<std::string, std::pair<bfs::path,
                                 std::time_t>> pair(command, childpair);
-
-                    events.push_back(pair);
+                    if (Commands::isChildPath(path, childpair.first)) {
+                        events.push_back(pair);
+                    }
                 }
             }
         }
         bashHistory.close();
-
-        Commands::print(events);
+        if (events.size() != 0) {
+            Commands::print(events, path);
+        }
+        else {
+            std::string message = "The command line history for this period is empty";
+            HistoryExtension::notify(message);
+        }
     }
     else {
         throw std::logic_error("File wasn't found");
@@ -116,25 +128,53 @@ void HistoryExtension::getConsoleHistory(const bfs::path& path,
 }
 
 void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir,
-                                        const Period& period) {
+                                            const Period& period,
+                                            const bool& isSearchRecursive) {
     std::vector<std::pair<bfs::path, std::time_t>> recentlyChangedFiles;
 
     if (bfs::exists(pathToDir)) {
-        for (const bfs::directory_entry& pathToObj :
-             bfs::recursive_directory_iterator(pathToDir)) {
+        if (isSearchRecursive) {
+            for (const bfs::directory_entry& pathToObj :
+                 bfs::recursive_directory_iterator(pathToDir)) {
 
-            if (bfs::is_regular_file(pathToObj)) {
-                bool isRecentlyChanged =
-                    Files::checkIsRecentlyChanged(pathToObj, period);
+                if (bfs::is_regular_file(pathToObj)) {
+                    bool isRecentlyChanged =
+                        Files::checkIsRecentlyChanged(pathToObj, period);
 
-                if (isRecentlyChanged) {
-                    Files::pushToList(pathToObj, recentlyChangedFiles);
+                    if (isRecentlyChanged) {
+                        Files::pushToList(pathToObj, recentlyChangedFiles);
+                    }
                 }
             }
         }
-        Files::sortByTime(recentlyChangedFiles);
-        Files::print(recentlyChangedFiles);
+        else {
+            for (const bfs::directory_entry& pathToObj :
+                 bfs::directory_iterator(pathToDir)) {
+
+                if (bfs::is_regular_file(pathToObj)) {
+                    bool isRecentlyChanged =
+                        Files::checkIsRecentlyChanged(pathToObj, period);
+
+                    if (isRecentlyChanged) {
+                        Files::pushToList(pathToObj, recentlyChangedFiles);
+                    }
+                }
+            }
+        }
+
+        if (recentlyChangedFiles.size() != 0) {
+            Files::sortByTime(recentlyChangedFiles);
+            Files::print(recentlyChangedFiles, pathToDir);
+        }
+        else {
+            std::string message = "There are no changed files for this period";
+            HistoryExtension::notify(message);
+        }
     }
+}
+
+void HistoryExtension::notify(const std::string& message) {
+    std::cerr << std::endl << message << std::endl;
 }
 
 void HistoryExtension::getCommand(bpo::options_description& desc) {
@@ -144,6 +184,7 @@ void HistoryExtension::getCommand(bpo::options_description& desc) {
         ("commandline", "outputs commandline's history")
         ("path", bpo::value<std::string>(), "add path to directory")
         ("period", bpo::value<std::string>(), "add period of history")
+        ("r", "search recursively")
     ;
 }
 

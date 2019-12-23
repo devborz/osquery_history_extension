@@ -12,16 +12,16 @@ namespace fs = boost::filesystem;
 
 class Files {
 public:
-    static bool checkIsRecentlyChanged(const fs::path& pathToObj,
-                const Period& period);
+    static bool checkIsRecentlyChanged(const fs::path&, const Period&);
 
-    static void pushToList(const fs::path& pathToObj,
-                std::vector<std::pair<fs::path, std::time_t>>&
-                recentlyChangedFiles);
+    static void pushToList(const fs::path&,
+                std::vector<std::pair<fs::path, std::time_t>>&);
 
-    static void sortByTime(std::vector<std::pair<fs::path, std::time_t>>&
-                recentlyChangedFiles);
+    static void sortByTime(std::vector<std::pair<fs::path, std::time_t>>&);
 
-    static void print(std::vector<std::pair<fs::path, std::time_t>>&
-                recentlyChangedFiles);
+    static void print(const std::vector<std::pair<fs::path, std::time_t>>&,
+                      const fs::path&);
+
+    static fs::path getRealtivePath(const fs::path&, const fs::path&);
+
 };

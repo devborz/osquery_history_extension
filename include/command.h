@@ -10,7 +10,7 @@
 #include <ctime>
 #include <map>
 
-namespace bfs = boost::filesystem;
+namespace fs = boost::filesystem;
 
 enum Command {
     filesystem,
@@ -22,8 +22,13 @@ class Commands {
 public:
     static Command parse(const std::string& command);
 
-    static void parseEvent(std::string&, std::string&, bfs::path&, std::time_t&);
+    static void parseEvent(std::string&, std::string&, fs::path&, std::time_t&);
 
     static void print(const std::vector<std::pair<std::string,
-                            std::pair<bfs::path, std::time_t>>>&);
+                      std::pair<fs::path, std::time_t>>>&,
+                      const fs::path&);
+
+    static fs::path getRealtivePath(const fs::path&, const fs::path&);
+
+    static bool isChildPath(const fs::path&, const fs::path&);
 };
