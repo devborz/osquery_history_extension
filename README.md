@@ -7,8 +7,8 @@
 
 ### Функции
 
-* История командной строки
-- Недавно измененные файлы
+* Предоставление истории командной строки
+- Предоставление списка измененных файлов
 
 ### Инструкция
 ```
@@ -18,17 +18,9 @@ Options:
   --help                give list of recently changed files
   --filesystem          outputs filesystem's history
   --commandline         outputs commandline's history
-  --path arg            add path to directory
-  --period arg          add period of history
-  --r                   search recursively
-
-
-Periods:
-  --period=h    last hour
-  --period=d    last day
-  --period=w    last week
-  --period=m    last month
-  --period=a    all time
+```
+### Скачивание и сборка
+```
 ```
 ### Tasks
 
