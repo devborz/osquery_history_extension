@@ -10,7 +10,6 @@
 #include <fstream>
 #include <vector>
 #include "files.h"
-#include "period.h"
 #include "command.h"
 #include <ctime>
 
@@ -21,11 +20,9 @@ class HistoryExtension {
 private:
     const std::string username = getenv("USER");
 
-    static void getConsoleHistory(const bfs::path&, const Period&,
-                                  const bool&);
+    static void getConsoleHistory(const bfs::path&);
 
-    static void getFilesystemHistory(const bfs::path&, const Period&,
-                                     const bool&);
+    static void getFilesystemHistory(const bfs::path&);
 
     static void iterate(bfs::path,
                         std::vector<std::pair<bfs::path, std::time_t>>& list);
@@ -36,21 +33,13 @@ private:
 
     static void notify(const std::string&);
 
-    static void notifyPathError(const std::string&);
-
-    static void notifyPeriodError(const std::string&);
-
     static void getHelp(bpo::options_description& desc);
 
     static void checkBashConfig();
 
     static Command readCommand(const bpo::variables_map&, unsigned int&);
 
-    static bfs::path readPath(const bpo::variables_map&, unsigned int&);
-
-    static Period readPeriod(const bpo::variables_map&, unsigned int&);
-
-    static bool isRecursive(const bpo::variables_map&);
+    static bfs::path getPath(const bpo::variables_map&);
 public:
     static void listen(int, char**);
 };

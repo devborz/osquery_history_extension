@@ -1,6 +1,8 @@
 #include "HistoryExtension.h"
 
 void HistoryExtension::listen(int argc, char* argv[]) {
+    //HistoryExtension::checkBashConfig();
+
     bpo::options_description desc;
     HistoryExtension::getCommand(desc);
 
@@ -9,33 +11,21 @@ void HistoryExtension::listen(int argc, char* argv[]) {
     bpo::notify(vm);
 
     unsigned int command_ec = 0;
-    unsigned int path_ec    = 0;
-    unsigned int period_ec  = 0;
 
     Command command = HistoryExtension::readCommand(vm, command_ec);
     if (command_ec == 1) {
         return;
     }
 
-    bfs::path path = HistoryExtension::readPath(vm, path_ec);
-    if (path_ec == 1) {
-        return;
-    }
-
-    Period period = HistoryExtension::readPeriod(vm, period_ec);
-    if (period_ec == 1) {
-        return;
-    }
-
-    bool isRecursive = HistoryExtension::isRecursive(vm);
+    bfs::path path = HistoryExtension::getPath(vm);
 
     switch (command) {
         case filesystem : {
-            getFilesystemHistory(path, period, isRecursive);
+            getFilesystemHistory(path);
             break;
         }
         case commandline : {
-            getConsoleHistory(path, period, isRecursive);
+            getConsoleHistory(path);
             break;
         }
         case help : {
@@ -45,11 +35,7 @@ void HistoryExtension::listen(int argc, char* argv[]) {
     }
 }
 
-void HistoryExtension::getConsoleHistory(const bfs::path& path,
-                                         const Period& period,
-                                         const bool& isRecursive) {
-
-    std::time_t period_ = Periods::parseTime(period);
+void HistoryExtension::getConsoleHistory(const bfs::path& path) {
 
     std::string homePath = getenv("HOME");
 
@@ -69,33 +55,16 @@ void HistoryExtension::getConsoleHistory(const bfs::path& path,
 
             std::getline(bashHistory, event);
 
-            if (event.length() >= 18) {
+            if (event.length() >= 20) {
 
                 Commands::parseEvent(event, command, path_, time);
 
-                std::time_t now = std::chrono::system_clock::to_time_t(
-                                    std::chrono::system_clock::now()
-                                    );
+                std::pair<bfs::path, std::time_t> childpair(path_, time);
 
-                if (now - time <= period_) {
+                std::pair<std::string, std::pair<bfs::path,
+                            std::time_t>> pair(command, childpair);
 
-                    std::pair<bfs::path, std::time_t> childpair(path_, time);
-
-                    std::pair<std::string, std::pair<bfs::path,
-                                std::time_t>> pair(command, childpair);
-
-                    if (isRecursive) {
-                        if (Commands::isChildPath(path, childpair.first)) {
-                            events.push_back(pair);
-                        }
-                    }
-                    else {
-                        if (path.relative_path() ==
-                            childpair.first.relative_path()) {
-                            events.push_back(pair);
-                        }
-                    }
-                }
+                events.push_back(pair);
             }
         }
 
@@ -105,7 +74,7 @@ void HistoryExtension::getConsoleHistory(const bfs::path& path,
             Commands::print(events, path);
         }
         else {
-            char message[] = "The command line history for this period is empty";
+            char message[] = "The command line history is empty";
             HistoryExtension::notify(std::string(message));
         }
     }
@@ -122,15 +91,12 @@ void HistoryExtension::iterate(bfs::path pathToDir,
          bfs::directory_iterator(pathToDir)) {
         try{
             if (bfs::is_regular_file(pathToObj)) {
-                bool isRecentlyChanged =
-                    Files::checkIsRecentlyChanged(pathToObj, LAST_HOUR);
-
-                if (isRecentlyChanged) {
-                    Files::pushToList(pathToObj, list);
-                }
+                Files::pushToList(pathToObj, list);
             }
             else if (bfs::is_directory(pathToObj)) {
-                HistoryExtension::iterate(pathToObj, list);
+                if (bfs::path(pathToObj).filename().string()[0] != '.') {
+                    HistoryExtension::iterate(pathToObj, list);
+                }
             }
         }
         catch (const bfs::filesystem_error& e) {
@@ -139,9 +105,7 @@ void HistoryExtension::iterate(bfs::path pathToDir,
     }
 }
 
-void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir,
-                                            const Period& period,
-                                            const bool& isRecursive) {
+void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir) {
     std::vector<std::pair<bfs::path, std::time_t>> recentlyChangedFiles;
     std::vector<std::shared_ptr<std::thread>> threads;
 
@@ -168,9 +132,6 @@ void HistoryExtension::getCommand(bpo::options_description& desc) {
         ("help", "give list of recently changed files")
         ("filesystem", "outputs filesystem's history")
         ("commandline", "outputs commandline's history")
-        ("path", bpo::value<std::string>(), "add path to directory")
-        ("period", bpo::value<std::string>(), "add period of history")
-        ("r", " recursively")
     ;
 }
 
@@ -179,29 +140,8 @@ void HistoryExtension::notifyCommandError(const std::string& invalidCommand) {
                 << "\' does not exist. See 'help'\n";
 }
 
-void HistoryExtension::notifyPathError(const std::string& invalidPath) {
-    std::cerr << "Path \'" << invalidPath
-                << "\' does not exist. See 'help'\n";
-}
-
-void HistoryExtension::notifyPeriodError(const std::string& invalidPeriod) {
-    std::cerr << "Period \'" << invalidPeriod
-                << "\' does not exist. See 'help'\n";
-}
-
 void HistoryExtension::getHelp(bpo::options_description& desc) {
     std::cout << "\nOptions:\n" << desc << std::endl;
-
-    std::cout << "Periods:\n" << std::setw(12)
-                                            << "--period=h" << "\tlast hour\n"
-                                << std::setw(12)
-                                            << "--period=d" << "\tlast day\n"
-                                << std::setw(12)
-                                            << "--period=w" << "\tlast week\n"
-                                << std::setw(12)
-                                            << "--period=m" << "\tlast month\n"
-                                << std::setw(12)
-                                            << "--period=a" << "\tall time\n";
 }
 
 void HistoryExtension::checkBashConfig() {
@@ -282,52 +222,10 @@ Command HistoryExtension::readCommand(const bpo::variables_map& vm,
     return command;
 }
 
-bfs::path HistoryExtension::readPath(const bpo::variables_map& vm,
-                                      unsigned int& ec) {
-    /*std::string path_;
+bfs::path HistoryExtension::getPath(const bpo::variables_map& vm) {
 
-    if (vm.count("path")) {
-      path_ = vm["path"].as<std::string>();
-    }
-    else {
-      path_ = getenv("HOME");
-    }
-
-    bfs::path pathToDir(path_);
-
-    if(!bfs::exists(pathToDir)) {
-      notifyPathError(path_);
-      ec = 1;
-  }*/
-    std::string path_ = "/mnt/c/Users/Usman/workspace";
+    std::string path_ = getenv("HOME");
     bfs::path pathToDir(path_);
 
     return pathToDir;
-}
-
-Period HistoryExtension::readPeriod(const bpo::variables_map& vm,
-                                      unsigned int& ec) {
-    std::string period_;
-
-    if (vm.count("period")) {
-      period_ = vm["period"].as<std::string>();
-    }
-    else {
-      period_ = "h";
-    }
-
-    Period period = Periods::parse(period_);
-
-    bool isValid = Periods::isValidPeriod(period);
-
-    if (!isValid) {
-      HistoryExtension::notifyPeriodError(period_);
-      ec = 1;
-    }
-
-    return period;
-}
-
-bool HistoryExtension::isRecursive(const bpo::variables_map& vm) {
-    return vm.count("r");
 }

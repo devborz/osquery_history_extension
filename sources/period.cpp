@@ -33,3 +33,15 @@ bool Periods::isValidPeriod(const Period& period) {
 
     return isValid;
 }
+
+
+/*std::cout << "Periods:\n" << std::setw(12)
+                                        << "--period=h" << "\tlast hour\n"
+                            << std::setw(12)
+                                        << "--period=d" << "\tlast day\n"
+                            << std::setw(12)
+                                        << "--period=w" << "\tlast week\n"
+                            << std::setw(12)
+                                        << "--period=m" << "\tlast month\n"
+                            << std::setw(12)
+                                            << "--period=a" << "\tall time\n";*/

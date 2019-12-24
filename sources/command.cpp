@@ -15,7 +15,7 @@ unsigned int findSpace(std::string& line, const unsigned int& pos) {
     char space = ' ';
 
     for(unsigned int i = pos + 1; i < line.length(); i++) {
-        if (line[i] == space) {
+        if (line[i] == space && line[i - 1] != space) {
             return i;
         }
     }
@@ -42,6 +42,7 @@ void Commands::parseEvent(std::string& event, std::string& command,
     std::string clock = event.substr(0, s_1);
     path = fs::path(event.substr(s_1 + 1, s_2 - s_1 - 1));
     command  = event.substr(s_3 + 2, event.length() - s_3 - 3);
+    std::cout << command <<std::endl;
 
     unsigned int year  = std::stoi(clock.substr(0, 4));
     unsigned int month = std::stoi(clock.substr(5, 2));
@@ -70,8 +71,8 @@ void Commands::print(const std::vector<std::pair<std::string,
         std::time_t time = e.second.second;
 
         std::cout <<  std::put_time(std::localtime(&time), "%c %Z") << "\t"
-                  <<  fs::path(Commands::getRealtivePath(headPath,
-                      e.second.first).string()+"/") << "\t" << e.first << "\n";
+                  <<  fs::path(e.second.first.string()+"/")
+                  << "\t" << e.first << "\n";
     }
 
 }
