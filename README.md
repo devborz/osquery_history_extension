@@ -15,7 +15,7 @@
 >>> _build/extension --help
 
 Options:
-  --help                give list of recently changed files
+  --help                outputs help message
   --filesystem          outputs filesystem's history
   --commandline         outputs commandline's history
 ```
