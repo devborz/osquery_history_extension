@@ -25,3 +25,11 @@ std::time_t Periods::parseTime(const Period& period) {
         }
     }
 }
+
+bool Periods::isValidPeriod(const Period& period) {
+    bool isValid = (period == LAST_HOUR) || (period == LAST_DAY)
+                || (period == LAST_WEEK) || (period == LAST_MONTH)
+                ||(period == ALL);
+
+    return isValid;
+}

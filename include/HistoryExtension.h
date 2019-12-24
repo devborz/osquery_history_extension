@@ -2,6 +2,7 @@
 #include <chrono>
 #include <iostream>
 #include <iomanip>
+#include <thread>
 #include <string>
 #include <stdlib.h>
 #include <boost/filesystem.hpp>
@@ -26,6 +27,9 @@ private:
     static void getFilesystemHistory(const bfs::path&, const Period&,
                                      const bool&);
 
+    static void iterate(bfs::path,
+                        std::vector<std::pair<bfs::path, std::time_t>>& list);
+
     static void getCommand(bpo::options_description&);
 
     static void notifyCommandError(const std::string&);
@@ -40,7 +44,13 @@ private:
 
     static void checkBashConfig();
 
-    static bool isValidPeriod(const Period&);
+    static Command readCommand(const bpo::variables_map&, unsigned int&);
+
+    static bfs::path readPath(const bpo::variables_map&, unsigned int&);
+
+    static Period readPeriod(const bpo::variables_map&, unsigned int&);
+
+    static bool isRecursive(const bpo::variables_map&);
 public:
     static void listen(int, char**);
 };

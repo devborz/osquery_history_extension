@@ -18,4 +18,6 @@ public:
     static Period parse(const std::string& period);
 
     static std::time_t parseTime(const Period& period);
+
+    static bool isValidPeriod(const Period&);
 };
