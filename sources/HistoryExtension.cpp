@@ -143,7 +143,7 @@ void HistoryExtension::notify(const std::string& message) {
 
 void HistoryExtension::getCommand(bpo::options_description& desc) {
     desc.add_options()
-        ("help", "give list of recently changed files")
+        ("help", "outputs help message")
         ("filesystem", "outputs filesystem's history")
         ("commandline", "outputs commandline's history")
     ;
