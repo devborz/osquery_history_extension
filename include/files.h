@@ -1,7 +1,6 @@
 #pragma once
 
 #include <boost/filesystem.hpp>
-#include "period.h"
 #include <vector>
 #include <string>
 #include <chrono>
@@ -16,6 +15,7 @@ public:
                 std::vector<std::pair<fs::path, std::time_t>>&);
 
     static void sortByTime(std::vector<std::pair<fs::path, std::time_t>>&);
+
 
     static void print(const std::vector<std::pair<fs::path, std::time_t>>&,
                       const fs::path&);

@@ -43,6 +43,7 @@ void HistoryExtension::getConsoleHistory(const bfs::path& path) {
     std::vector<std::pair<std::string, std::pair<bfs::path,
                 std::time_t>>> events;
     if (bashHistory.is_open()) {
+
         while (!bashHistory.eof()) {
 
             std::time_t time;
@@ -77,6 +78,7 @@ void HistoryExtension::getConsoleHistory(const bfs::path& path) {
             char message[] = "The command line history is empty";
             HistoryExtension::notify(std::string(message));
         }
+
     }
     else {
         throw std::logic_error("File wasn't found");
@@ -89,35 +91,47 @@ void HistoryExtension::iterate(bfs::path pathToDir,
 
     for (const bfs::directory_entry& pathToObj :
          bfs::directory_iterator(pathToDir)) {
-        try{
+
+        try {
+
             if (bfs::is_regular_file(pathToObj)) {
+
                 Files::pushToList(pathToObj, list);
+
             }
             else if (bfs::is_directory(pathToObj)) {
+
                 if (bfs::path(pathToObj).filename().string()[0] != '.') {
                     HistoryExtension::iterate(pathToObj, list);
                 }
+
             }
+
         }
         catch (const bfs::filesystem_error& e) {
             std::cout << e.what() << std::endl;
         }
+
     }
 }
 
 void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir) {
     std::vector<std::pair<bfs::path, std::time_t>> recentlyChangedFiles;
-    std::vector<std::shared_ptr<std::thread>> threads;
 
     if (bfs::exists(pathToDir)) {
+
         HistoryExtension::iterate(pathToDir, recentlyChangedFiles);
 
         if (recentlyChangedFiles.size() != 0) {
+
             Files::sortByTime(recentlyChangedFiles);
+
             Files::print(recentlyChangedFiles, pathToDir);
         }
         else {
+
             std::string message = "There are no changed files for this period";
+
             HistoryExtension::notify(message);
         }
     }
@@ -135,9 +149,8 @@ void HistoryExtension::getCommand(bpo::options_description& desc) {
     ;
 }
 
-void HistoryExtension::notifyCommandError(const std::string& invalidCommand) {
-    std::cerr << "Command \'" << invalidCommand
-                << "\' does not exist. See 'help'\n";
+void HistoryExtension::notifyCommandError(const std::string& command) {
+    std::cerr << "Command \'" << command << "\' does not exist. See 'help'\n";
 }
 
 void HistoryExtension::getHelp(bpo::options_description& desc) {
@@ -146,9 +159,11 @@ void HistoryExtension::getHelp(bpo::options_description& desc) {
 
 void HistoryExtension::checkBashConfig() {
     std::string homePath = getenv("HOME");
+
     std::string config;
 
     std::ifstream bashConfig("config/config.txt");
+
     if (bashConfig.is_open()) {
         std::string line;
         std::getline(bashConfig, line);
@@ -161,23 +176,30 @@ void HistoryExtension::checkBashConfig() {
     }
 
     std::string profile;
+
     if (bfs::exists(homePath + "/.profile")) {
         profile = "/.profile";
     }
     else {
         profile = "/.bash_profile";
     }
+
     std::ifstream bashProfile(homePath + profile);
+
     bool haveConfig = false;
 
     if (bashProfile.is_open()) {
+
         while (!bashProfile.eof()) {
             std::string line;
+
             std::getline(bashProfile, line);
+
             if (line == config) {
                 haveConfig = true;
             }
         }
+
         bashProfile.close();
     }
     else {
@@ -185,8 +207,11 @@ void HistoryExtension::checkBashConfig() {
     }
 
     if (!haveConfig) {
+
         std::ofstream bashProfile(homePath + profile);
+
         if (bashProfile.is_open()) {
+
             while (!bashProfile.eof()) {
                 bashProfile << config;
             }
@@ -223,8 +248,8 @@ Command HistoryExtension::readCommand(const bpo::variables_map& vm,
 }
 
 bfs::path HistoryExtension::getPath(const bpo::variables_map& vm) {
-
     std::string path_ = getenv("HOME");
+
     bfs::path pathToDir(path_);
 
     return pathToDir;
