@@ -9,9 +9,10 @@
 #include <boost/program_options.hpp>
 #include <fstream>
 #include <vector>
+#include <ctime>
 #include "files.h"
 #include "command.h"
-#include <ctime>
+#include "JsonSaver.h"
 
 namespace bfs = boost::filesystem;
 namespace bpo = boost::program_options;
@@ -49,7 +50,7 @@ private:
 
 
     static bfs::path getPath(const bpo::variables_map&);
-    
+
 public:
     static void listen(int, char**);
 };

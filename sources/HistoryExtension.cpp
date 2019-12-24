@@ -72,7 +72,8 @@ void HistoryExtension::getConsoleHistory(const bfs::path& path) {
         bashHistory.close();
 
         if (events.size() != 0) {
-            Commands::print(events, path);
+            //Commands::print(events, path);
+            JsonSaver::saveCommamdsHistory(events);
         }
         else {
             char message[] = "The command line history is empty";
@@ -126,7 +127,8 @@ void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir) {
 
             Files::sortByTime(recentlyChangedFiles);
 
-            Files::print(recentlyChangedFiles, pathToDir);
+            JsonSaver::saveFilesystemsHistory(recentlyChangedFiles);
+            //Files::print(recentlyChangedFiles, pathToDir);
         }
         else {
 

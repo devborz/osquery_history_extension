@@ -19,6 +19,7 @@ huntergate(
 project(HistoryExtension)
 
 hunter_add_package(Boost COMPONENTS system filesystem program_options)
+
 find_package(Boost CONFIG REQUIRED system filesystem program_options)
 
 
@@ -29,6 +30,8 @@ add_library(files STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/files.cpp)
 add_library(command STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/command.cpp)
+add_library(JsonSaver STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/JsonSaver.cpp)
 
 add_executable(extension
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/main.cpp)
@@ -46,9 +49,14 @@ target_include_directories(command PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
+target_include_directories(JsonSaver PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 
+target_link_libraries(JsonSaver Boost::filesystem Boost::system)
 target_link_libraries(command Boost::filesystem Boost::system)
 target_link_libraries(files Boost::filesystem Boost::system)
 target_link_libraries(HistoryExtension files command
-Boost::filesystem Boost::system Boost::program_options)
+Boost::filesystem Boost::system Boost::program_options JsonSaver)
 target_link_libraries(extension HistoryExtension)
