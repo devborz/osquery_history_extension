@@ -42,7 +42,6 @@ void Commands::parseEvent(std::string& event, std::string& command,
     std::string clock = event.substr(0, s_1);
     path = fs::path(event.substr(s_1 + 1, s_2 - s_1 - 1));
     command  = event.substr(s_3 + 2, event.length() - s_3 - 3);
-    std::cout << command <<std::endl;
 
     unsigned int year  = std::stoi(clock.substr(0, 4));
     unsigned int month = std::stoi(clock.substr(5, 2));
