@@ -1,0 +1,11 @@
+[
+    { "time" : "Tue Dec 24 04:35:45 2019 MSK", "path": "/home/devborz/.bash_logout" },
+    { "time" : "Tue Dec 24 04:35:45 2019 MSK", "path": "/home/devborz/.bashrc" },
+    { "time" : "Tue Dec 24 05:34:21 2019 MSK", "path": "/home/devborz/.sudo_as_admin_successful" },
+    { "time" : "Tue Dec 24 06:15:28 2019 MSK", "path": "/home/devborz/.profile" },
+    { "time" : "Tue Dec 24 06:15:49 2019 MSK", "path": "/home/devborz/.viminfo" },
+    { "time" : "Tue Dec 24 06:29:55 2019 MSK", "path": "/home/devborz/.gitconfig" },
+    { "time" : "Tue Dec 24 16:39:29 2019 MSK", "path": "/home/devborz/file.txt" },
+    { "time" : "Tue Dec 24 19:22:11 2019 MSK", "path": "/home/devborz/.bash_history" },
+    { "time" : "Tue Dec 24 22:18:45 2019 MSK", "path": "/home/devborz/bash-history.log" }
+]
