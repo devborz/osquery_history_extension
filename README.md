@@ -20,7 +20,14 @@ Options:
   --commandline         outputs commandline's history
 ```
 ### Скачивание и сборка
-```
+```ShellSession
+$ git clone https://github.com/devborz/osquery_extension
+$ cd osquery_extension
+$ cmake -H. -B_build
+$ cmake --build _build
+$ _build/extension --filesystem
+$ _build/extension --commandline
+$ 
 ```
 ### Tasks
 
