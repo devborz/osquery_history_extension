@@ -1938,5 +1938,115 @@
         "command": "_build/extension --filesystem",
         "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
         "time": "Wed Dec 25 14:33:21 2019"
+    },
+    {
+        "command": "_build/extension --commandline",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:33:27 2019"
+    },
+    {
+        "command": "git add .",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:34:04 2019"
+    },
+    {
+        "command": "git commit -m\"At the finish line #2\"",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:34:32 2019"
+    },
+    {
+        "command": "git push -f origin master",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:35:02 2019"
+    },
+    {
+        "command": "git add .",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:41:58 2019"
+    },
+    {
+        "command": "git commit -m\"Updated README.md\"",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:42:17 2019"
+    },
+    {
+        "command": "git push -f origin master",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:42:38 2019"
+    },
+    {
+        "command": "git add .",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:43:31 2019"
+    },
+    {
+        "command": "git commit -m\"Updated README.md\"",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:43:36 2019"
+    },
+    {
+        "command": "git commit -m\"Updated README.md\"",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:43:37 2019"
+    },
+    {
+        "command": "git push -f origin master",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:43:51 2019"
+    },
+    {
+        "command": "_build/extension --help",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:44:29 2019"
+    },
+    {
+        "command": "git remote remove",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:47:12 2019"
+    },
+    {
+        "command": "git remote remove origin",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:47:17 2019"
+    },
+    {
+        "command": "git remote add origin https://github.com/devborz/osquery_history_extension",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:47:52 2019"
+    },
+    {
+        "command": "git pull origin master",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:48:10 2019"
+    },
+    {
+        "command": "cd ..",
+        "path": "/mnt/c/Users/Usman/workspace",
+        "time": "Wed Dec 25 14:49:02 2019"
+    },
+    {
+        "command": "mv osquery-extension/ osquery_history_extension",
+        "path": "/mnt/c/Users/Usman/workspace",
+        "time": "Wed Dec 25 14:49:36 2019"
+    },
+    {
+        "command": "mv osquery-extension/ osquery_history_extension",
+        "path": "/mnt/c/Users/Usman/workspace",
+        "time": "Wed Dec 25 14:49:50 2019"
+    },
+    {
+        "command": "mv osquery-extension osquery_history_extension",
+        "path": "/mnt/c/Users/Usman/workspace",
+        "time": "Wed Dec 25 14:50:06 2019"
+    },
+    {
+        "command": "cd osquery_history_extension/",
+        "path": "/mnt/c/Users/Usman/workspace/osquery_history_extension",
+        "time": "Wed Dec 25 14:50:14 2019"
+    },
+    {
+        "command": "_build/extension --filesystem",
+        "path": "/mnt/c/Users/Usman/workspace/osquery_history_extension",
+        "time": "Wed Dec 25 14:50:52 2019"
     }
 ]
