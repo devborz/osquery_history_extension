@@ -4,7 +4,7 @@ void Files::pushToList(const fs::path& pathToObj,
             std::vector<std::pair<fs::path, std::time_t>>& recentlyChangedFiles) {
 
     auto fileLastChange = fs::last_write_time(pathToObj);
-    
+
     std::time_t fileLastChangeTime = fileLastChange;
 
     std::pair<fs::path, std::time_t> file(pathToObj, fileLastChangeTime);
@@ -35,7 +35,7 @@ void Files::sortByTime(std::vector<std::pair<fs::path, std::time_t>>&
     }
 }
 
-void Files::print(const std::vector<std::pair<fs::path, std::time_t>>&
+/*void Files::print(const std::vector<std::pair<fs::path, std::time_t>>&
                  recentlyChangedFiles,
                  const fs::path& headPath) {
 
@@ -61,4 +61,4 @@ fs::path Files::getRealtivePath(const fs::path& parentPath,
     fs::path relativePath = fs::path(difference);
 
     return relativePath;
-}
+}*/

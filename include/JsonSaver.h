@@ -3,9 +3,12 @@
 #include <fstream>
 #include <iomanip>
 #include <chrono>
+#include <stdio.h>
 #include <ctime>
+#include <map>
 #include <vector>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <boost/filesystem.hpp>
 
 namespace bfs = boost::filesystem;

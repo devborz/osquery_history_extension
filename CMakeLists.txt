@@ -18,8 +18,9 @@ huntergate(
 
 project(HistoryExtension)
 
+hunter_add_package(nlohmann_json)
 hunter_add_package(Boost COMPONENTS system filesystem program_options)
-
+find_package(nlohmann_json)
 find_package(Boost CONFIG REQUIRED system filesystem program_options)
 
 
@@ -54,7 +55,7 @@ target_include_directories(JsonSaver PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(JsonSaver Boost::filesystem Boost::system)
+target_link_libraries(JsonSaver Boost::filesystem Boost::system nlohmann_json)
 target_link_libraries(command Boost::filesystem Boost::system)
 target_link_libraries(files Boost::filesystem Boost::system)
 target_link_libraries(HistoryExtension files command
