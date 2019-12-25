@@ -70,53 +70,6 @@ bool Commands::parseEvent(std::string& event, std::string& command,
     }
 }
 
-/*void Commands::print(const std::vector<std::pair<std::string,
-                     std::pair<fs::path, std::time_t>>>& events,
-                     const fs::path& headPath) {
-    for (const auto& e: events) {
-        std::time_t time = e.second.second;
-
-        std::cout <<  std::put_time(std::localtime(&time), "%c %Z") << "\t"
-                  <<  fs::path(e.second.first.string()+"/")
-                  << "\t" << e.first << "\n";
-    }
-
-}
-
-fs::path Commands::getRealtivePath(const fs::path& parentPath,
-                                const fs::path& childPath) {
-
-    std::string parent = parentPath.relative_path().string();
-    std::string child  = childPath.relative_path().string();
-
-    char slash = '/';
-    if (parent.back() != slash) {
-        parent.append("/");
-    }
-
-    std::string difference = child.substr(parent.length(),
-                                              child.length() - 1);
-
-    fs::path relativePath = fs::path(difference);
-
-    return relativePath;
-}
-
-bool Commands::isChildPath(const fs::path& parentPath,
-                                const fs::path& path) {
-    std::string parent = parentPath.string();
-    std::string path_  = path.string();
-
-    auto n = path_.find(parent);
-
-    if(n != std::string::npos) {
-        return true;
-    }
-    else {
-        return false;
-    }
-}*/
-
 bool Commands::isTime(const std::string& time) {
     char sym1 = '-';
     char sym2 = '.';

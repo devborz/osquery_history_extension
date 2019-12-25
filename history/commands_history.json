@@ -1893,5 +1893,50 @@
         "command": "_build/extension --filesystem",
         "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
         "time": "Wed Dec 25 14:22:10 2019"
+    },
+    {
+        "command": "_build/extension --commandline",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:22:12 2019"
+    },
+    {
+        "command": "git add .",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:22:42 2019"
+    },
+    {
+        "command": "git commit -m\"At the finish line\"",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:23:50 2019"
+    },
+    {
+        "command": "git push -f origin master",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:24:35 2019"
+    },
+    {
+        "command": "git push -f origin master",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:28:47 2019"
+    },
+    {
+        "command": "cmake --build _build",
+        "path": "/mnt/c/Users/Usman",
+        "time": "Wed Dec 25 14:32:05 2019"
+    },
+    {
+        "command": "cd workspace/osquery-extension/",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:32:16 2019"
+    },
+    {
+        "command": "cmake --build _build/",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:32:46 2019"
+    },
+    {
+        "command": "_build/extension --filesystem",
+        "path": "/mnt/c/Users/Usman/workspace/osquery-extension",
+        "time": "Wed Dec 25 14:33:21 2019"
     }
 ]
