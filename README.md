@@ -11,8 +11,8 @@
 - Предоставление пользователю списка измененных файлов
 
 ### Инструкция по использованию
-```
->>> _build/extension --help
+```ShellSession
+$ _build/extension --help
 
 Options:
   --help                outputs help message
@@ -27,7 +27,7 @@ $ cmake -H. -B_build
 $ cmake --build _build
 $ _build/extension --filesystem
 $ _build/extension --commandline
-$ 
+$
 ```
 ### Tasks
 
