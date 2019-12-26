@@ -37,42 +37,44 @@ void HistoryExtension::work(int argc, char* argv[]) {
 void HistoryExtension::getCommandlineHistory(const bfs::path& path) {
 
     std::string homePath = getenv("HOME");
-
+    
     std::ifstream bashHistory(homePath + "/bash-history.log");
-    std::vector<std::pair<std::string, std::pair<bfs::path,
-                std::time_t>>> events;
+
+    std::vector<ExecutedCommand> history;
+
     if (bashHistory.is_open()) {
 
         while (!bashHistory.eof()) {
 
-            std::time_t time;
+            std::time_t time_;
 
             bfs::path path_;
 
-            std::string command;
+            std::string command_;
 
-            std::string event;
+            std::string event_;
 
-            std::getline(bashHistory, event);
+            std::getline(bashHistory, event_);
 
-            if (event.length() >= 20) {
+            if (event_.length() >= 20) {
 
-                if (Commands::parseEvent(event, command, path_, time)) {
+                if (Commands::parseEvent(event_, command_, path_, time_)) {
 
-                    std::pair<bfs::path, std::time_t> childpair(path_, time);
 
-                    std::pair<std::string, std::pair<bfs::path,
-                                std::time_t>> pair(command, childpair);
+                    // std::pair<bfs::path, std::time_t> childpair(path_, time);
+                    //
+                    // std::pair<std::string, std::pair<bfs::path,
+                    //             std::time_t>> pair(command, childpair);
 
-                    events.push_back(pair);
+                    history.push_back(ExecutedCommand(command_, path_, time_));
                 }
             }
         }
 
         bashHistory.close();
 
-        if (events.size() != 0) {
-            JsonSaver::saveCommamdsHistory(events);
+        if (history.size() != 0) {
+            JsonSaver::saveCommandsHistory(history);
         }
         else {
             char message[] = "The command line history is empty";
@@ -86,7 +88,7 @@ void HistoryExtension::getCommandlineHistory(const bfs::path& path) {
 }
 
 void HistoryExtension::iterate(bfs::path pathToDir,
-                        std::vector<std::pair<bfs::path, std::time_t>>& list) {
+                               std::vector<ChangedFile>& list) {
 
 
     for (const bfs::directory_entry& pathToObj :
@@ -116,7 +118,7 @@ void HistoryExtension::iterate(bfs::path pathToDir,
 }
 
 void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir) {
-    std::vector<std::pair<bfs::path, std::time_t>> recentlyChangedFiles;
+    std::vector<ChangedFile> recentlyChangedFiles;
 
     if (bfs::exists(pathToDir)) {
 

@@ -3,31 +3,50 @@ import osquery
 from os.path import expanduser
 
 @osquery.register_plugin
-class MyTablePlugin(osquery.TablePlugin):
+class FilesystemHistoryTablePlugin(osquery.TablePlugin):
     def name(self):
-        return "vimplugins"
+        return "filesystem_history"
     def columns(self):
         return [
-            osquery.TableColumn(name="Plugin Name", type=osquery.STRING),
-            osquery.TableColumn(name="Github Stars", type=osquery.STRING),
-            osquery.TableColumn(name="VimAwesome Category", type=osquery.STRING),
-            osquery.TableColumn(name="Open Issues", type=osquery.STRING),
-            osquery.TableColumn(name="Closed Issues", type=osquery.STRING),
+            osquery.TableColumn(name="Time", type=osquery.STRING),
+            osquery.TableColumn(name="Path", type=osquery.STRING),
+            osquery.TableColumn(name="Filename", type=osquery.STRING),
         ]
     def generate(self, context):
         query_data = []
         home = expanduser("~")
-        input_file = open(home + '/.vimPlugins.json')
+        input_file = open('../history/filesystems_history.json')
         json_array = json.load(input_file)
         for item in json_array:
             row = {}
-            row["Plugin Name"] = item['name']
-            row["Github Stars"] = item['stars']
-            row["VimAwesome Category"] = item['category']
-            row["Open Issues"] = item['open']
-            row["Closed Issues"] = item['closed']
+            row["Time"] = item['time']
+            row["Path to file"] = item['path']
+            row["Filename"] = item['filename']
+            query_data.append(row)
+        return query_data
+
+@osquery.register_plugin
+class CommandLineHistoryTablePlugin(osquery.TablePlugin):
+    def name(self):
+        return "commandline_history"
+    def columns(self):
+        return [
+            osquery.TableColumn(name="Time", type=osquery.STRING),
+            osquery.TableColumn(name="Execute directory", type=osquery.STRING),
+            osquery.TableColumn(name="Command", type=osquery.STRING),
+        ]
+    def generate(self, context):
+        query_data = []
+        home = expanduser("~")
+        input_file = open('../history/commandlines_history.json')
+        json_array = json.load(input_file)
+        for item in json_array:
+            row = {}
+            row["Time"] = item['time']
+            row["Execute directory"] = item['path']
+            row["Command"] = item['command']
             query_data.append(row)
         return query_data
 
 if __name__ == "__main__":
-    osquery.start_extension(name="vim_info", version="1.0.0")
+    osquery.start_extension(name="history", version="1.0.0")

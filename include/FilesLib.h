@@ -6,13 +6,13 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
+#include "ChangedFile.h"
 
 namespace fs = boost::filesystem;
 
 class Files {
 public:
-    static void pushToList(const fs::path&,
-                std::vector<std::pair<fs::path, std::time_t>>&);
+    static void pushToList(const fs::path&, std::vector<ChangedFile>&);
 
-    static void sortByTime(std::vector<std::pair<fs::path, std::time_t>>&);
+    static void sortByTime(std::vector<ChangedFile>&);
 };

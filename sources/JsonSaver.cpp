@@ -1,23 +1,22 @@
 #include "JsonSaver.h"
 
-void JsonSaver::saveCommamdsHistory(const std::vector<std::pair<std::string,
-                                 std::pair<bfs::path, std::time_t>>>& history) {
+void JsonSaver::saveCommandsHistory(std::vector<ExecutedCommand>& history) {
 
     std::ofstream out("history/commands_history.json", std::ofstream::out |
                       std::ofstream::trunc);
-                      
+
     nlohmann::json commands = nlohmann::json::array();
 
     for (unsigned int i = 0; i < history.size(); i++) {
-        std::string time = std::asctime(
-            std::localtime(&history[i].second.second)
-        );
+        std::time_t t = history[i].getTime();
+
+        std::string time = std::asctime(std::localtime(&t));
 
         time = time.substr(0, time.length() - 1);
         nlohmann::json obj = nlohmann::json::object ({
             {"time", time},
-            {"path", history[i].second.first.string()},
-            {"command", history[i].first}
+            {"path", history[i].getPath().string()},
+            {"command", history[i].getCommand()}
         });
         commands.push_back(obj);
     }
@@ -27,8 +26,7 @@ void JsonSaver::saveCommamdsHistory(const std::vector<std::pair<std::string,
     out.close();
 }
 
-void JsonSaver::saveFilesystemsHistory(const std::vector<std::pair<bfs::path,
-                                                       std::time_t>>& history) {
+void JsonSaver::saveFilesystemsHistory(std::vector<ChangedFile>& history) {
 
     std::ofstream out("history/filesystems_history.json", std::ofstream::out |
                       std::ofstream::trunc);
@@ -36,13 +34,16 @@ void JsonSaver::saveFilesystemsHistory(const std::vector<std::pair<bfs::path,
     nlohmann::json files = nlohmann::json::array();
 
     for (unsigned int i = 0; i < history.size(); i++) {
-        std::string time = std::asctime(std::localtime(&history[i].second));
+        std::time_t t = history[i].getTime();
+
+        std::string time = std::asctime(std::localtime(&t));
 
         time = time.substr(0, time.length() - 1);
 
         nlohmann::json obj = nlohmann::json::object({
           {"time", time},
-          {"path", history[i].first.string()}
+          {"path", history[i].getPath().string()},
+          {"filename", history[i].getFileName()}
         });
 
         files.push_back(obj);

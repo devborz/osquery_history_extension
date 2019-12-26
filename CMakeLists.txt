@@ -27,10 +27,14 @@ find_package(Boost CONFIG REQUIRED system filesystem program_options)
 
 add_library(HistoryExtension STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/HistoryExtension.cpp)
-add_library(files STATIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/files.cpp)
-add_library(command STATIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/command.cpp)
+add_library(File STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/ChangedFile.cpp)
+add_library(Command STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/ExecutedCommand.cpp)
+add_library(FilesLib STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/FilesLib.cpp)
+add_library(CommandsLib STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/CommandsLib.cpp)
 add_library(JsonSaver STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/JsonSaver.cpp)
 
@@ -42,11 +46,19 @@ target_include_directories(HistoryExtension PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-target_include_directories(files PUBLIC
+target_include_directories(File PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-target_include_directories(command PUBLIC
+target_include_directories(Command PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_include_directories(FilesLib PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_include_directories(CommandsLib PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -55,9 +67,12 @@ target_include_directories(JsonSaver PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(JsonSaver Boost::filesystem Boost::system nlohmann_json)
-target_link_libraries(command Boost::filesystem Boost::system)
-target_link_libraries(files Boost::filesystem Boost::system)
-target_link_libraries(HistoryExtension files command
-Boost::filesystem Boost::system Boost::program_options JsonSaver)
+target_link_libraries(Command Boost::filesystem Boost::system)
+target_link_libraries(File Boost::filesystem Boost::system)
+target_link_libraries(JsonSaver Boost::filesystem Boost::system
+nlohmann_json::nlohmann_json File Command)
+target_link_libraries(CommandsLib Boost::filesystem Boost::system)
+target_link_libraries(FilesLib Boost::filesystem Boost::system File)
+target_link_libraries(HistoryExtension FilesLib CommandsLib Boost::filesystem
+Boost::system Boost::program_options JsonSaver File Command)
 target_link_libraries(extension HistoryExtension)

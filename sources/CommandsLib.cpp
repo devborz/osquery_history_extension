@@ -1,4 +1,4 @@
-#include "command.h"
+#include "CommandsLib.h"
 
 unsigned int Commands::findSpace(const std::string& line) {
     char space = ' ';

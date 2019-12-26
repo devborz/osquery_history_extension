@@ -10,8 +10,10 @@
 #include <fstream>
 #include <vector>
 #include <ctime>
-#include "files.h"
-#include "command.h"
+#include "ChangedFile.h"
+#include "ExecutedCommand.h"
+#include "FilesLib.h"
+#include "CommandsLib.h"
 #include "JsonSaver.h"
 
 namespace bfs = boost::filesystem;
@@ -28,8 +30,7 @@ private:
     static void getFilesystemHistory(const bfs::path&);
 
 
-    static void iterate(bfs::path,
-                        std::vector<std::pair<bfs::path, std::time_t>>& list);
+    static void iterate(bfs::path, std::vector<ChangedFile>& list);
 
     static void getCommand(bpo::options_description&);
 

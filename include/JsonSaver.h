@@ -1,5 +1,4 @@
 #pragma once
-
 #include <fstream>
 #include <iomanip>
 #include <chrono>
@@ -7,17 +6,18 @@
 #include <ctime>
 #include <map>
 #include <vector>
+#include <string>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <boost/filesystem.hpp>
+#include "ChangedFile.h"
+#include "ExecutedCommand.h"
 
 namespace bfs = boost::filesystem;
 
 class JsonSaver {
 public:
-    static void saveCommamdsHistory(const std::vector<std::pair<std::string,
-                                    std::pair<bfs::path, std::time_t>>>&);
+    static void saveCommandsHistory(std::vector<ExecutedCommand>&);
 
-    static void saveFilesystemsHistory(const std::vector<std::pair<bfs::path,
-                                        std::time_t>>&);
+    static void saveFilesystemsHistory(std::vector<ChangedFile>&);
 };
