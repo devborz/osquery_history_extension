@@ -20,7 +20,7 @@ void Files::sortByTime(std::vector<ChangedFile>& recentlyChangedFiles) {
 
         for (unsigned int j = 0; j < size - i - 1; j++) {
 
-            if (recentlyChangedFiles[j].getTime() >
+            if (recentlyChangedFiles[j].getTime() <
                 recentlyChangedFiles[j + 1].getTime()) {
 
                 auto temp = recentlyChangedFiles[j];
