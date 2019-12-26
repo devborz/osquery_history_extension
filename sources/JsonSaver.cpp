@@ -2,7 +2,7 @@
 
 void JsonSaver::saveCommandsHistory(std::vector<ExecutedCommand>& history) {
 
-    std::ofstream out("history/commands_history.json", std::ofstream::out |
+    std::ofstream out("~/commands_history.json", std::ofstream::out |
                       std::ofstream::trunc);
 
     nlohmann::json commands = nlohmann::json::array();
@@ -28,7 +28,7 @@ void JsonSaver::saveCommandsHistory(std::vector<ExecutedCommand>& history) {
 
 void JsonSaver::saveFilesystemsHistory(std::vector<ChangedFile>& history) {
 
-    std::ofstream out("history/filesystems_history.json", std::ofstream::out |
+    std::ofstream out("~/filesystems_history.json", std::ofstream::out |
                       std::ofstream::trunc);
 
     nlohmann::json files = nlohmann::json::array();

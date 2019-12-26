@@ -15,12 +15,12 @@ class FilesystemHistoryTablePlugin(osquery.TablePlugin):
     def generate(self, context):
         query_data = []
         home = expanduser("~")
-        input_file = open('../history/filesystems_history.json')
+        input_file = open(home+'/filesystems_history.json')
         json_array = json.load(input_file)
         for item in json_array:
             row = {}
             row["Time"] = item['time']
-            row["Path to file"] = item['path']
+            row["Path"] = item['path']
             row["Filename"] = item['filename']
             query_data.append(row)
         return query_data
@@ -38,7 +38,7 @@ class CommandLineHistoryTablePlugin(osquery.TablePlugin):
     def generate(self, context):
         query_data = []
         home = expanduser("~")
-        input_file = open('../history/commandlines_history.json')
+        input_file = open(home +'/commandlines_history.json')
         json_array = json.load(input_file)
         for item in json_array:
             row = {}
