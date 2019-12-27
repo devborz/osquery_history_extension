@@ -5,7 +5,7 @@ from os.path import expanduser
 @osquery.register_plugin
 class FilesystemHistoryTablePlugin(osquery.TablePlugin):
     def name(self):
-        return "filesystem_history"
+        return "fs_history"
     def columns(self):
         return [
             osquery.TableColumn(name="Time", type=osquery.STRING),
@@ -28,7 +28,7 @@ class FilesystemHistoryTablePlugin(osquery.TablePlugin):
 @osquery.register_plugin
 class CommandLineHistoryTablePlugin(osquery.TablePlugin):
     def name(self):
-        return "commandline_history"
+        return "bash_history"
     def columns(self):
         return [
             osquery.TableColumn(name="Time", type=osquery.STRING),
