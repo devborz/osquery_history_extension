@@ -1,14 +1,16 @@
 #include "JsonSaver.h"
 
 void JsonSaver::saveBashHistory(std::vector<ExecutedCommand>& history) {
+    
+    std::string home = getenv("HOME");
 
-    std::ofstream out("~/bash_history.json", std::ofstream::out |
+    std::ofstream out(home + "/bash_history.json", std::ofstream::out |
                       std::ofstream::trunc);
 
     if (out.is_open()) {
         nlohmann::json commands = nlohmann::json::array();
 
-        for (unsigned int i = 0; i < history.size() && i < 20; i++) {
+        for (unsigned int i = history.size();  i > 0 && i > history.size() - 20; --i) {
             std::time_t t = history[i].getTime();
 
             std::string time = std::asctime(std::localtime(&t));
@@ -32,14 +34,20 @@ void JsonSaver::saveBashHistory(std::vector<ExecutedCommand>& history) {
 }
 
 void JsonSaver::saveFilesystemsHistory(std::vector<ChangedFile>& history) {
+    
+    std::string home = getenv("HOME");
 
-    std::ofstream out("~/fs_history.json", std::ofstream::out |
+    std::ofstream out(home + "/fs_history.json", std::ofstream::out |
                       std::ofstream::trunc);
 
     if (out.is_open()) {
     nlohmann::json files = nlohmann::json::array();
 
-        for (unsigned int i = 0; i < history.size() && i < 20; i++) {
+    	unsigned int pos = history.size();
+	if (pos > 20) {
+	    pos = 20;
+	}
+        for (unsigned int i = pos; i > 0; --i) {
             std::time_t t = history[i].getTime();
 
             std::string time = std::asctime(std::localtime(&t));
