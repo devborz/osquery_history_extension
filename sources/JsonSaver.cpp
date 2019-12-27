@@ -9,8 +9,12 @@ void JsonSaver::saveBashHistory(std::vector<ExecutedCommand>& history) {
 
     if (out.is_open()) {
         nlohmann::json commands = nlohmann::json::array();
-
-        for (unsigned int i = history.size();  i > 0 && i > history.size() - 20; --i) {
+        
+	unsigned int end = history.size();
+        if (end >= 20) {
+            end =  20;
+        }
+        for (unsigned int i = 0; i < end; ++i) {
             std::time_t t = history[i].getTime();
 
             std::string time = std::asctime(std::localtime(&t));
@@ -38,7 +42,7 @@ void JsonSaver::saveFilesystemsHistory(std::vector<ChangedFile>& history) {
     std::string home = getenv("HOME");
 
     std::ofstream out(home + "/fs_history.json", std::ofstream::out |
-                      std::ofstream::trunc);
+                      std::ofstream::trunc);    
 
     if (out.is_open()) {
     nlohmann::json files = nlohmann::json::array();
