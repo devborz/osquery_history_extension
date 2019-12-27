@@ -14,7 +14,7 @@ namespace fs = boost::filesystem;
 
 enum Command {
     filesystem,
-    commandline,
+    bash,
     help
 };
 
@@ -25,7 +25,7 @@ public:
     static bool parseEvent(std::string&, std::string&, fs::path&, std::time_t&);
 
     static bool isTime(const std::string& time);
-    
+
 private:
     static unsigned int findSpace(const std::string&);
 

@@ -24,7 +24,7 @@ private:
     const std::string username = getenv("USER");
 
 
-    static void getCommandlineHistory(const bfs::path&);
+    static void getBashHistory(const bfs::path&);
 
 
     static void getFilesystemHistory(const bfs::path&);
@@ -42,9 +42,6 @@ private:
 
 
     static void getHelp(bpo::options_description& desc);
-
-
-    //static void checkBashConfig();
 
 
     static Command readCommand(const bpo::variables_map&, unsigned int&);

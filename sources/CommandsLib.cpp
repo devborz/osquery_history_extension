@@ -26,7 +26,7 @@ unsigned int Commands::findSpace(const std::string& line,
 Command Commands::parse(const std::string& command) {
     std::map<std::string, Command> commandsMap {
         std::make_pair("filesystem", filesystem),
-        std::make_pair("commandline", commandline),
+        std::make_pair("bash", bash),
         std::make_pair("help", help)
     };
 

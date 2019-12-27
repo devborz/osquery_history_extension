@@ -23,8 +23,8 @@ void HistoryExtension::work(int argc, char* argv[]) {
             getFilesystemHistory(path);
             break;
         }
-        case commandline : {
-            getCommandlineHistory(path);
+        case bash : {
+            getBashHistory(path);
             break;
         }
         case help : {
@@ -34,7 +34,7 @@ void HistoryExtension::work(int argc, char* argv[]) {
     }
 }
 
-void HistoryExtension::getCommandlineHistory(const bfs::path& path) {
+void HistoryExtension::getBashHistory(const bfs::path& path) {
 
     std::string homePath = getenv("HOME");
 
@@ -71,7 +71,7 @@ void HistoryExtension::getCommandlineHistory(const bfs::path& path) {
             JsonSaver::saveBashHistory(history);
         }
         else {
-            char message[] = "The command line history is empty";
+            char message[] = "The bash history is empty";
             HistoryExtension::notify(std::string(message));
         }
 
@@ -141,7 +141,7 @@ void HistoryExtension::getCommand(bpo::options_description& desc) {
     desc.add_options()
         ("help", "outputs help message")
         ("filesystem", "outputs filesystem's history")
-        ("commandline", "outputs commandline's history")
+        ("bash", "outputs bash history")
     ;
 }
 
@@ -153,86 +153,20 @@ void HistoryExtension::getHelp(bpo::options_description& desc) {
     std::cout << "\nOptions:\n" << desc << std::endl;
 }
 
-// void HistoryExtension::checkBashConfig() {
-//     std::string homePath = getenv("HOME");
-//
-//     std::string config;
-//
-//     std::ifstream bashConfig("config/config.txt");
-//     std::cerr << "here";
-//     if (bashConfig.is_open()) {
-//         std::string line;
-//         std::getline(bashConfig, line);
-//         config = line;
-//         std::cerr << line;
-//         bashConfig.close();
-//     }
-//     else {
-//         throw std::logic_error("File wasn't found");
-//     }
-//
-//     std::string profile;
-//
-//     if (bfs::exists(homePath + "/profile.txt")) {
-//         profile = "/profile.txt";
-//     }
-//     else {
-//         profile = "/._bash_profile";
-//     }
-//
-//     std::ifstream bashProfile_in(homePath + profile);
-//
-//     bool haveConfig = false;
-//
-//     if (bashProfile_in.is_open()) {
-//         while (!bashProfile_in.eof()) {
-//             std::string line;
-//
-//             std::getline(bashProfile_in, line);
-//
-//             if (line == config) {
-//                 haveConfig = true;
-//                 std::cerr << "\nTRUE\n";
-//             }
-//         }
-//
-//         bashProfile_in.close();
-//     }
-//     else {
-//         throw std::logic_error("File wasn't found");
-//     }
-//     std::cerr << "\nHERE\n";
-//     if (!haveConfig) {
-//
-//         std::ofstream bashProfile_out(homePath + profile, std::ios_base::app);
-//
-//         if (bashProfile_out.is_open()) {
-//
-//             while (!bashProfile_out.eof()) {
-//                 bashProfile_out << config;
-//             }
-//             bashProfile_out.close();
-//         }
-//         else {
-//             throw std::logic_error("File wasn't found");
-//         }
-//     }
-// }
-
 Command HistoryExtension::readCommand(const bpo::variables_map& vm,
                                       unsigned int& ec) {
     std::string command_;
 
     if (vm.count("filesystem"))
       command_ = "filesystem";
-    else if (vm.count("commandline"))
-      command_ = "commandline";
+    else if (vm.count("bash"))
+      command_ = "bash";
     else if (vm.count("help"))
       command_ = "help";
 
     Command command = Commands::parse(command_);
 
-    bool isValid = command == filesystem || command == commandline ||
+    bool isValid = command == filesystem || command == bash ||
                    command == help;
 
     if (!isValid) {

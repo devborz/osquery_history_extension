@@ -1,7 +1,7 @@
 #include "JsonSaver.h"
 
 void JsonSaver::saveBashHistory(std::vector<ExecutedCommand>& history) {
-    
+
     std::string home = getenv("HOME");
 
     std::ofstream out(home + "/bash_history.json", std::ofstream::out |
@@ -9,12 +9,12 @@ void JsonSaver::saveBashHistory(std::vector<ExecutedCommand>& history) {
 
     if (out.is_open()) {
         nlohmann::json commands = nlohmann::json::array();
-        
-	unsigned int end = history.size();
-        if (end >= 20) {
-            end =  20;
+
+        unsigned int start = 0;
+        if (history.size() >= 20) {
+            start = history.size() - 20;
         }
-        for (unsigned int i = 0; i < end; ++i) {
+        for (unsigned int i = start; i < history.size(); i++) {
             std::time_t t = history[i].getTime();
 
             std::string time = std::asctime(std::localtime(&t));
@@ -38,20 +38,20 @@ void JsonSaver::saveBashHistory(std::vector<ExecutedCommand>& history) {
 }
 
 void JsonSaver::saveFilesystemsHistory(std::vector<ChangedFile>& history) {
-    
+
     std::string home = getenv("HOME");
 
     std::ofstream out(home + "/fs_history.json", std::ofstream::out |
-                      std::ofstream::trunc);    
+                      std::ofstream::trunc);
 
     if (out.is_open()) {
-    nlohmann::json files = nlohmann::json::array();
+        nlohmann::json files = nlohmann::json::array();
 
-    	unsigned int pos = history.size();
-	if (pos > 20) {
-	    pos = 20;
-	}
-        for (unsigned int i = pos; i > 0; --i) {
+        unsigned int start = 0;
+        if (history.size() >= 20) {
+            start =  history.size() - 20;
+        }
+        for (unsigned int i = start; i < history.size(); i++) {
             std::time_t t = history[i].getTime();
 
             std::string time = std::asctime(std::localtime(&t));
@@ -67,7 +67,7 @@ void JsonSaver::saveFilesystemsHistory(std::vector<ChangedFile>& history) {
             files.push_back(obj);
         }
 
-        out << std::setw(4) <<files;
+        out << std::setw(4) << files;
 
         out.close();
     }
