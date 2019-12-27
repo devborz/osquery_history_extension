@@ -33,7 +33,7 @@ void JsonSaver::saveFilesystemsHistory(std::vector<ChangedFile>& history) {
 
     nlohmann::json files = nlohmann::json::array();
 
-    for (unsigned int i = 0; i < history.size() && i < 50; i++) {
+    for (unsigned int i = 0; i < history.size() && i < 30; i++) {
         std::time_t t = history[i].getTime();
 
         std::string time = std::asctime(std::localtime(&t));
