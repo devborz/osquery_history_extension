@@ -37,15 +37,23 @@ $ _build/extension --bash
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery>
+```
 <!--- open second shell window: --->
+```
 $ python sources/history_extension.py --socket /home/${USERNAME}/.osquery/shell.em
+```
 <!--- in first shell window: --->
+```
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery> select from * bash_history;
+```
 <!--- outputs bash_history --->
+```
 osquery> select from * filesystem_history;
+```
 <!--- outputs filesystem history --->
+```
 $ .exit
 ```
 ### Tasks
