@@ -37,15 +37,15 @@ $ _build/extension --bash
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery>
-# open second shell window:
+<!--- open second shell window: --->
 $ python sources/history_extension.py --socket /home/${USERNAME}/.osquery/shell.em
-# in first shell window:
+<!--- in first shell window: --->
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery> select from * bash_history;
-# outputs bash_history
+<!--- outputs bash_history --->
 osquery> select from * filesystem_history;
-# outputs recently filesystem history
+<!--- outputs filesystem history --->
 $ .exit
 ```
 ### Tasks
@@ -57,3 +57,8 @@ $ .exit
 - [x] Реализовать проверку настройки bash_history на сохранение времени и директории
 - [x] Реализовать сохрaнение полученных данный в формате `json`
 - [x] Интегрировать в osquery в виде расширения
+
+### Cкачивание необходимых пакетов
+```ShellSession
+$ pip install osquery
+```
