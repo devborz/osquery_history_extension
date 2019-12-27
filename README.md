@@ -19,7 +19,9 @@ Options:
   --filesystem          outputs filesystem's history
   --bash                outputs bash history
 ```
+
 ### Скачивание и сборка
+
 ```ShellSession
 $ cat > ~/.profile << EOF
 >
@@ -38,22 +40,23 @@ $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery>
 ```
-<!--- open second shell window: --->
-```
+open second shell window:
+```ShellSession
 $ python sources/history_extension.py --socket /home/${USERNAME}/.osquery/shell.em
 ```
-<!--- in first shell window: --->
-```
+in first shell window:
+```ShellSession
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery> select from * bash_history;
 ```
-<!--- outputs bash_history --->
-```
+\*outputs bash_history\*
+```ShellSession
 osquery> select from * filesystem_history;
 ```
-<!--- outputs filesystem history --->
-```
+\*outputs filesystem history\*
+```ShellSession
+
 $ .exit
 ```
 ### Tasks
