@@ -10,7 +10,7 @@
 * Предоставление пользователю истории командной строки
 - Предоставление пользователю списка измененных файлов
 
-### Инструкция по использованию `_build/extension`
+### Инструкция по использованию `sources/extension.py`
 
 ```ShellSession
 osquery> select * from bash_history;
@@ -53,25 +53,27 @@ $ _build/extension --bash
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery>
-```
-in second shell window:
-```ShellSession
-$ python sources/history_extension.py --socket /home/${USERNAME}/.osquery/shell.em
-```
-in first shell window:
-```ShellSession
+# in second shell window:
+$ python sources/extension.py --socket /home/${USERNAME}/.osquery/shell.em
+# in first shell window:
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery> select from * bash_history;
 ```
 This command outputs bash_history
 ```ShellSession
-$ osquery> select from * filesystem_history;
+osquery> select from * filesystem_history;
 ```
 This command outputs filesystem history
 ```ShellSession
 
 $ .exit
+```
+
+### Cкачивание необходимых пакетов
+
+```ShellSession
+$ pip install osquery
 ```
 ### Tasks
 
@@ -82,9 +84,4 @@ $ .exit
 - [x] Реализовать проверку настройки bash_history на сохранение времени и директории
 - [x] Реализовать сохрaнение полученных данный в формате `json`
 - [x] Интегрировать в osquery в виде расширения
-
-### Cкачивание необходимых пакетов
-
-```ShellSession
-$ pip install osquery
-```
+- [ ] Добавить возможность получения истории `vim`
