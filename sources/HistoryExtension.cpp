@@ -37,7 +37,7 @@ void HistoryExtension::work(int argc, char* argv[]) {
 void HistoryExtension::getCommandlineHistory(const bfs::path& path) {
 
     std::string homePath = getenv("HOME");
-    
+
     std::ifstream bashHistory(homePath + "/bash-history.log");
 
     std::vector<ExecutedCommand> history;
@@ -60,12 +60,6 @@ void HistoryExtension::getCommandlineHistory(const bfs::path& path) {
 
                 if (Commands::parseEvent(event_, command_, path_, time_)) {
 
-
-                    // std::pair<bfs::path, std::time_t> childpair(path_, time);
-                    //
-                    // std::pair<std::string, std::pair<bfs::path,
-                    //             std::time_t>> pair(command, childpair);
-
                     history.push_back(ExecutedCommand(command_, path_, time_));
                 }
             }
@@ -74,7 +68,7 @@ void HistoryExtension::getCommandlineHistory(const bfs::path& path) {
         bashHistory.close();
 
         if (history.size() != 0) {
-            JsonSaver::saveCommandsHistory(history);
+            JsonSaver::saveBashHistory(history);
         }
         else {
             char message[] = "The command line history is empty";

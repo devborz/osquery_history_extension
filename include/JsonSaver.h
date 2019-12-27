@@ -17,7 +17,7 @@ namespace bfs = boost::filesystem;
 
 class JsonSaver {
 public:
-    static void saveCommandsHistory(std::vector<ExecutedCommand>&);
+    static void saveBashHistory(std::vector<ExecutedCommand>&);
 
     static void saveFilesystemsHistory(std::vector<ChangedFile>&);
 };
