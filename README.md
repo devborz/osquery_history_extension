@@ -28,7 +28,7 @@ Options:
   --bash                outputs bash history
 ```
 
-### Скачивание и сборка
+### Скачивание
 
 ```ShellSession
 $ cat > ~/.profile << EOF
@@ -37,13 +37,17 @@ $ cat > ~/.profile << EOF
 > EOF
 $ git clone https://github.com/devborz/osquery_history_extension
 $ cd osquery_history_extension
+```
+### Сборка и обновление данных
+![Alt Text](https://github.com/devborz/osquery_history_extension/images/extension-building-saving.gif)
+```ShellSession
 $ cmake -H. -B_build
 $ cmake --build _build
 $ _build/extension --filesystem
 $ _build/extension --bash
 ```
 ### Интеграция в OSquery
-
+![Alt Text](https://github.com/devborz/osquery_history_extension/images/extension-osquery.gif)
 ```ShellSession
 $ osqueryi
 Using a virtual database. Need help, type '.help'
