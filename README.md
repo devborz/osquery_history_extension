@@ -10,7 +10,20 @@
 * Предоставление пользователю истории командной строки
 - Предоставление пользователю списка измененных файлов
 
-### Инструкция по использованию
+### Инструкция по использованию `_build/extension`
+
+```ShellSession
+osquery> select * from bash_history;
+```
+This command outputs bash_history
+
+```ShellSession
+$ osquery> select from * filesystem_history;
+```
+This command outputs filesystem history
+
+### Инструкция по использованию `_build/extension`
+
 ```ShellSession
 $ _build/extension --help
 
@@ -35,12 +48,13 @@ $ _build/extension --filesystem
 $ _build/extension --bash
 ```
 ### Интеграция в OSquery
+
 ```ShellSession
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery>
 ```
-open second shell window:
+in second shell window:
 ```ShellSession
 $ python sources/history_extension.py --socket /home/${USERNAME}/.osquery/shell.em
 ```
@@ -50,11 +64,11 @@ $ osqueryi
 Using a virtual database. Need help, type '.help'
 osquery> select from * bash_history;
 ```
-\*outputs bash_history\*
+This command outputs bash_history
 ```ShellSession
-osquery> select from * filesystem_history;
+$ osquery> select from * filesystem_history;
 ```
-\*outputs filesystem history\*
+This command outputs filesystem history
 ```ShellSession
 
 $ .exit
@@ -70,6 +84,7 @@ $ .exit
 - [x] Интегрировать в osquery в виде расширения
 
 ### Cкачивание необходимых пакетов
+
 ```ShellSession
 $ pip install osquery
 ```
