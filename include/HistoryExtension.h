@@ -13,7 +13,7 @@
 #include "ExecutedCommand.h"
 #include "VimSession.h"
 #include "FilesLib.h"
-#include "CommandsLib.h"
+#include "OptionsLib.h"
 #include "JsonSaver.h"
 
 namespace bfs = boost::filesystem;
@@ -36,10 +36,10 @@ private:
     static void iterate(bfs::path, std::vector<ChangedFile>& list);
 
 
-    static void getCommand(bpo::options_description&);
+    static void getOptions(bpo::options_description&);
 
 
-    static void notifyCommandError(const std::string&);
+    static void notifyOptionError(const std::string&);
 
 
     static void notify(const std::string&);
@@ -48,7 +48,7 @@ private:
     static void getHelp(bpo::options_description& desc);
 
 
-    static Command readCommand(const bpo::variables_map&, unsigned int&);
+    static Option readOption(const bpo::variables_map&, unsigned int&);
 
 
     static bfs::path getPath();

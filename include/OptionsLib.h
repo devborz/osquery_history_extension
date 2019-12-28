@@ -4,14 +4,14 @@
 #include <string>
 #include <map>
 
-enum Command {
+enum Option {
     filesystem,
     bash,
     vim,
     help
 };
 
-class Commands {
+class Options {
 public:
-    static Command parse(const std::string& command);
+    static Option parse(const std::string&);
 };

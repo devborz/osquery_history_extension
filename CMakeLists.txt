@@ -36,8 +36,8 @@ add_library(VimSession STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/VimSession.cpp)
 add_library(FilesLib STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/FilesLib.cpp)
-add_library(CommandsLib STATIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/CommandsLib.cpp)
+add_library(OptionsLib STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/OptionsLib.cpp)
 add_library(JsonSaver STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/JsonSaver.cpp)
 
@@ -64,7 +64,7 @@ target_include_directories(FilesLib PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-target_include_directories(CommandsLib PUBLIC
+target_include_directories(OptionsLib PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -78,9 +78,9 @@ target_link_libraries(ExecutedCommand Boost::filesystem Boost::system)
 target_link_libraries(ChangedFile Boost::filesystem Boost::system)
 target_link_libraries(JsonSaver Boost::filesystem Boost::system
 nlohmann_json::nlohmann_json ChangedFile ExecutedCommand VimSession)
-target_link_libraries(CommandsLib Boost::filesystem Boost::system)
+target_link_libraries(OptionsLib)
 target_link_libraries(FilesLib Boost::filesystem Boost::system ChangedFile)
-target_link_libraries(HistoryExtension FilesLib CommandsLib Boost::filesystem
+target_link_libraries(HistoryExtension FilesLib OptionsLib Boost::filesystem
 Boost::system Boost::program_options JsonSaver ChangedFile ExecutedCommand
 VimSession)
 target_link_libraries(extension HistoryExtension)

@@ -3,22 +3,22 @@
 void HistoryExtension::work(int argc, char* argv[]) {
 
     bpo::options_description desc;
-    HistoryExtension::getCommand(desc);
+    HistoryExtension::getOptions(desc);
 
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
     bpo::notify(vm);
 
-    unsigned int command_ec = 0;
+    unsigned int option_ec = 0;
 
-    Command command = HistoryExtension::readCommand(vm, command_ec);
-    if (command_ec == 1) {
+    Option option = HistoryExtension::readOption(vm, option_ec);
+    if (option_ec == 1) {
         return;
     }
 
     bfs::path path = HistoryExtension::getPath();
 
-    switch (command) {
+    switch (option) {
         case filesystem : {
             HistoryExtension::getFilesystemHistory(path);
             break;
@@ -144,7 +144,7 @@ void HistoryExtension::notify(const std::string& message) {
     std::cerr << std::endl << message << std::endl;
 }
 
-void HistoryExtension::getCommand(bpo::options_description& desc) {
+void HistoryExtension::getOptions(bpo::options_description& desc) {
     desc.add_options()
         ("help", "outputs help message")
         ("filesystem", "outputs filesystem's history")
@@ -153,38 +153,38 @@ void HistoryExtension::getCommand(bpo::options_description& desc) {
     ;
 }
 
-void HistoryExtension::notifyCommandError(const std::string& command) {
-    std::cerr << "Command \'" << command << "\' does not exist. See 'help'\n";
+void HistoryExtension::notifyOptionError(const std::string& option) {
+    std::cerr << "Option \'" << option << "\' does not exist. See 'help'\n";
 }
 
 void HistoryExtension::getHelp(bpo::options_description& desc) {
     std::cout << "\nOptions:\n" << desc << std::endl;
 }
 
-Command HistoryExtension::readCommand(const bpo::variables_map& vm,
+Option HistoryExtension::readOption(const bpo::variables_map& vm,
                                       unsigned int& ec) {
-    std::string command_;
+    std::string option_;
 
     if (vm.count("filesystem"))
-        command_ = "filesystem";
+        option_ = "filesystem";
     else if (vm.count("bash"))
-        command_ = "bash";
+        option_ = "bash";
     else if (vm.count("vim"))
-        command_ = "vim";
+        option_ = "vim";
     else if (vm.count("help"))
-        command_ = "help";
+        option_ = "help";
 
-    Command command = Commands::parse(command_);
+    Option option = Options::parse(option_);
 
-    bool isValid = command == filesystem || command == bash ||
-                   command == help || command == vim;
+    bool isValid = option == filesystem || option == bash ||
+                   option == help || option == vim;
 
     if (!isValid) {
-      HistoryExtension::notifyCommandError(command_);
+      HistoryExtension::notifyOptionError(option_);
       ec = 1;
     }
 
-    return command;
+    return option;
 }
 
 bfs::path HistoryExtension::getPath() {
