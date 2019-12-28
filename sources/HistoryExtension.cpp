@@ -16,11 +16,9 @@ void HistoryExtension::work(int argc, char* argv[]) {
         return;
     }
 
-    bfs::path path = HistoryExtension::getPath();
-
     switch (option) {
         case filesystem : {
-            HistoryExtension::getFilesystemHistory(path);
+            HistoryExtension::getFilesystemHistory();
             break;
         }
         case bash : {
@@ -113,8 +111,10 @@ void HistoryExtension::iterate(bfs::path pathToDir,
     }
 }
 
-void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir) {
+void HistoryExtension::getFilesystemHistory() {
     std::vector<ChangedFile> recentlyChangedFiles;
+
+    bfs::path pathToDir = HistoryExtension::getPath();
 
     if (bfs::exists(pathToDir)) {
 

@@ -27,7 +27,7 @@ private:
     static void getBashHistory();
 
 
-    static void getFilesystemHistory(const bfs::path&);
+    static void getFilesystemHistory();
 
 
     static void getVimHistory();
