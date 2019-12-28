@@ -73,7 +73,7 @@ target_include_directories(JsonSaver PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-
+target_link_libraries(VimSession Boost::filesystem Boost::system)
 target_link_libraries(ExecutedCommand Boost::filesystem Boost::system)
 target_link_libraries(ChangedFile Boost::filesystem Boost::system)
 target_link_libraries(JsonSaver Boost::filesystem Boost::system

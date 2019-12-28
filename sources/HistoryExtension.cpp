@@ -40,9 +40,9 @@ void HistoryExtension::work(int argc, char* argv[]) {
 
 void HistoryExtension::getBashHistory() {
 
-    std::string homePath = getenv("HOME");
+    std::string pathToFile = getenv("HOME") + std::string("/bash-history.log");
 
-    std::ifstream bashHistory(homePath + "/bash-history.log");
+    std::ifstream bashHistory(pathToFile);
 
     std::vector<ExecutedCommand> history;
 
@@ -82,7 +82,8 @@ void HistoryExtension::getBashHistory() {
 
     }
     else {
-        throw std::logic_error("File wasn't found");
+        std::string error_message = "File " + pathToFile + " wasn't found";
+        throw std::logic_error(error_message);
     }
 }
 
@@ -104,9 +105,7 @@ void HistoryExtension::iterate(bfs::path pathToDir,
                 if (bfs::path(pathToObj).filename().string()[0] != '.') {
                     HistoryExtension::iterate(pathToObj, list);
                 }
-
             }
-
         }
         catch (const bfs::filesystem_error& e) {
             std::cout << e.what() << std::endl;
@@ -137,7 +136,21 @@ void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir) {
 }
 
 void HistoryExtension::getVimHistory() {
+    std::vector<VimSession> vimSessions;
 
+    std::string pathToFile = getenv("HOME") + std::string("/.viminfo");
+
+    std::ifstream viminfo(pathToFile);
+
+    if (viminfo.is_open()) {
+        while (!viminfo.eof()) {
+
+        }
+    }
+    else {
+        std::string error_message = "File " + pathToFile + " wasn't found";
+        throw std::logic_error(error_message);
+    }
 }
 
 void HistoryExtension::notify(const std::string& message) {
@@ -188,9 +201,9 @@ Option HistoryExtension::readOption(const bpo::variables_map& vm,
 }
 
 bfs::path HistoryExtension::getPath() {
-    std::string path_ = getenv("HOME");
+    std::string homePath_ = getenv("HOME");
 
-    bfs::path pathToDir(path_);
+    bfs::path homePath(homePath_);
 
-    return pathToDir;
+    return homePath;
 }
