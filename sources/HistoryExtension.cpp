@@ -62,7 +62,8 @@ void HistoryExtension::getBashHistory() {
 
             if (event_.length() >= 20) {
 
-                if (Commands::parseEvent(event_, command_, path_, time_)) {
+                if (ExecutedCommand::parseEvent(event_, command_,
+                                                path_, time_)) {
 
                     history.push_back(ExecutedCommand(command_, path_, time_));
                 }
@@ -88,7 +89,6 @@ void HistoryExtension::getBashHistory() {
 void HistoryExtension::iterate(bfs::path pathToDir,
                                std::vector<ChangedFile>& list) {
 
-
     for (const bfs::directory_entry& pathToObj :
          bfs::directory_iterator(pathToDir)) {
 
@@ -111,7 +111,6 @@ void HistoryExtension::iterate(bfs::path pathToDir,
         catch (const bfs::filesystem_error& e) {
             std::cout << e.what() << std::endl;
         }
-
     }
 }
 

@@ -18,7 +18,16 @@ public:
 
     std::time_t getTime();
 
+    static bool parseEvent(std::string&, std::string&,
+                           bfs::path&, std::time_t&);
+
 private:
+    static bool isTime(const std::string& time);
+
+    static unsigned int findSpace(const std::string&);
+
+    static unsigned int findSpace(const std::string&, const unsigned int&);
+
     std::string command_;
 
     bfs::path   path_;

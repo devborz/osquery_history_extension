@@ -9,7 +9,6 @@
 #include <boost/program_options.hpp>
 #include <fstream>
 #include <vector>
-#include <ctime>
 #include "ChangedFile.h"
 #include "ExecutedCommand.h"
 #include "VimSession.h"
