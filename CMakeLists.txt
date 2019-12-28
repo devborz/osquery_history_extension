@@ -16,15 +16,13 @@ huntergate(
  SHA1 "70287b1ffa810ee4e952052a9adff9b4856d0d54"
 )
 
-
 project(HistoryExtension)
-
 
 hunter_add_package(nlohmann_json)
 hunter_add_package(Boost COMPONENTS system filesystem program_options)
+
 find_package(nlohmann_json)
 find_package(Boost CONFIG REQUIRED system filesystem program_options)
-
 
 add_library(HistoryExtension STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/HistoryExtension.cpp)
