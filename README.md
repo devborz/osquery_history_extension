@@ -8,14 +8,17 @@
 ### Функции
 
 * Предоставление пользователю истории командной строки
-- Предоставление пользователю списка измененных файлов
+* Предоставление пользователю списка измененных файлов
+* Предоставление пользователю истории `Vim`
 
 ### Инструкция по использованию расширения
 
 ```ShellSession
 $ osquery> select * from bash_history; #This command outputs bash_history
 
-$ osquery> select from * filesystem_history; #This command outputs fs_history
+$ osquery> select from * fs_history; #This command outputs fs_history
+
+$ osquery> select from * vim_history; #This command outputs vim_history
 ```
 ### Инструкция по использованию `_build/extension`
 
@@ -26,6 +29,7 @@ Options:
   --help                outputs help message
   --filesystem          outputs filesystem's history
   --bash                outputs bash history
+  --vim                 outputs vim  history
 ```
 
 ### Скачивание
@@ -45,6 +49,7 @@ $ cmake -H. -B_build
 $ cmake --build _build
 $ _build/extension --filesystem
 $ _build/extension --bash
+$ _build/extension --vim
 ```
 ### Интеграция в OSquery
 ![Alt Text](https://github.com/devborz/osquery_history_extension/blob/master/images/extension-osquery.gif)
@@ -58,7 +63,8 @@ $ #in first shell window:
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 $ osquery> select from * bash_history;
-$ osquery> select from * filesystem_history;
+$ osquery> select from * fs_history;
+$ osquery> select from * vim_history;
 $ osquery> .exit
 ```
 
