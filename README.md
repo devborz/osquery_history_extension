@@ -16,9 +16,9 @@
 ```ShellSession
 $ osquery> select * from bash_history; #This command outputs bash_history
 
-$ osquery> select from * fs_history; #This command outputs fs_history
+$ osquery> select * from fs_history; #This command outputs fs_history
 
-$ osquery> select from * vim_history; #This command outputs vim_history
+$ osquery> select * from vim_history; #This command outputs vim_history
 ```
 ### Инструкция по использованию `_build/extension`
 
@@ -63,9 +63,9 @@ $ python sources/extension.py --socket /home/${USERNAME}/.osquery/shell.em
 $ #in first shell window:
 $ osqueryi
 Using a virtual database. Need help, type '.help'
-$ osquery> select from * bash_history;
-$ osquery> select from * fs_history;
-$ osquery> select from * vim_history;
+$ osquery> select * from bash_history;
+$ osquery> select * from fs_history;
+$ osquery> select * from vim_history;
 $ osquery> .exit
 ```
 
