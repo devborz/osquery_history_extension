@@ -12,6 +12,7 @@
 #include <boost/filesystem.hpp>
 #include "ChangedFile.h"
 #include "ExecutedCommand.h"
+#include "VimSession.h"
 
 namespace bfs = boost::filesystem;
 
@@ -19,5 +20,7 @@ class JsonSaver {
 public:
     static void saveBashHistory(std::vector<ExecutedCommand>&);
 
-    static void saveFilesystemsHistory(std::vector<ChangedFile>&);
+    static void saveFilesystemHistory(std::vector<ChangedFile>&);
+
+    static void saveVimHistory(std::vector<VimSession>&);
 };

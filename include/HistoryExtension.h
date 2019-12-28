@@ -12,6 +12,7 @@
 #include <ctime>
 #include "ChangedFile.h"
 #include "ExecutedCommand.h"
+#include "VimSession.h"
 #include "FilesLib.h"
 #include "CommandsLib.h"
 #include "JsonSaver.h"

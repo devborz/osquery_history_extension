@@ -16,7 +16,9 @@ huntergate(
  SHA1 "70287b1ffa810ee4e952052a9adff9b4856d0d54"
 )
 
+
 project(HistoryExtension)
+
 
 hunter_add_package(nlohmann_json)
 hunter_add_package(Boost COMPONENTS system filesystem program_options)
@@ -24,13 +26,14 @@ find_package(nlohmann_json)
 find_package(Boost CONFIG REQUIRED system filesystem program_options)
 
 
-
 add_library(HistoryExtension STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/HistoryExtension.cpp)
-add_library(File STATIC
+add_library(ChangedFile STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/ChangedFile.cpp)
-add_library(Command STATIC
+add_library(ExecutedCommand STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/ExecutedCommand.cpp)
+add_library(VimSession STATIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/VimSession.cpp)
 add_library(FilesLib STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/FilesLib.cpp)
 add_library(CommandsLib STATIC
@@ -41,16 +44,19 @@ add_library(JsonSaver STATIC
 add_executable(extension
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/main.cpp)
 
-
 target_include_directories(HistoryExtension PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-target_include_directories(File PUBLIC
+target_include_directories(ChangedFile PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
-target_include_directories(Command PUBLIC
+target_include_directories(ExecutedCommand PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_include_directories(VimSession PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -67,12 +73,14 @@ target_include_directories(JsonSaver PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
-target_link_libraries(Command Boost::filesystem Boost::system)
-target_link_libraries(File Boost::filesystem Boost::system)
+
+target_link_libraries(ExecutedCommand Boost::filesystem Boost::system)
+target_link_libraries(ChangedFile Boost::filesystem Boost::system)
 target_link_libraries(JsonSaver Boost::filesystem Boost::system
-nlohmann_json::nlohmann_json File Command)
+nlohmann_json::nlohmann_json ChangedFile ExecutedCommand VimSession)
 target_link_libraries(CommandsLib Boost::filesystem Boost::system)
-target_link_libraries(FilesLib Boost::filesystem Boost::system File)
+target_link_libraries(FilesLib Boost::filesystem Boost::system ChangedFile)
 target_link_libraries(HistoryExtension FilesLib CommandsLib Boost::filesystem
-Boost::system Boost::program_options JsonSaver File Command)
+Boost::system Boost::program_options JsonSaver ChangedFile ExecutedCommand
+VimSession)
 target_link_libraries(extension HistoryExtension)

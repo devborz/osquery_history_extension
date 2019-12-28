@@ -126,7 +126,7 @@ void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir) {
 
             Files::sortByTime(recentlyChangedFiles);
 
-            JsonSaver::saveFilesystemsHistory(recentlyChangedFiles);
+            JsonSaver::saveFilesystemHistory(recentlyChangedFiles);
         }
         else {
 
