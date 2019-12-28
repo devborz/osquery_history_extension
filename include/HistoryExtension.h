@@ -24,13 +24,17 @@ private:
     const std::string username = getenv("USER");
 
 
-    static void getBashHistory(const bfs::path&);
+    static void getBashHistory();
 
 
     static void getFilesystemHistory(const bfs::path&);
 
 
+    static void getVimHistory();
+
+
     static void iterate(bfs::path, std::vector<ChangedFile>& list);
+
 
     static void getCommand(bpo::options_description&);
 
@@ -47,7 +51,7 @@ private:
     static Command readCommand(const bpo::variables_map&, unsigned int&);
 
 
-    static bfs::path getPath(const bpo::variables_map&);
+    static bfs::path getPath();
 
 public:
     static void work(int, char**);

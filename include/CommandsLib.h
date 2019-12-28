@@ -15,6 +15,7 @@ namespace fs = boost::filesystem;
 enum Command {
     filesystem,
     bash,
+    vim,
     help
 };
 

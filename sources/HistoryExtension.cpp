@@ -16,15 +16,19 @@ void HistoryExtension::work(int argc, char* argv[]) {
         return;
     }
 
-    bfs::path path = HistoryExtension::getPath(vm);
+    bfs::path path = HistoryExtension::getPath();
 
     switch (command) {
         case filesystem : {
-            getFilesystemHistory(path);
+            HistoryExtension::getFilesystemHistory(path);
             break;
         }
         case bash : {
-            getBashHistory(path);
+            HistoryExtension::getBashHistory();
+            break;
+        }
+        case vim : {
+            HistoryExtension::getVimHistory();
             break;
         }
         case help : {
@@ -34,7 +38,7 @@ void HistoryExtension::work(int argc, char* argv[]) {
     }
 }
 
-void HistoryExtension::getBashHistory(const bfs::path& path) {
+void HistoryExtension::getBashHistory() {
 
     std::string homePath = getenv("HOME");
 
@@ -133,6 +137,10 @@ void HistoryExtension::getFilesystemHistory(const bfs::path& pathToDir) {
     }
 }
 
+void HistoryExtension::getVimHistory() {
+
+}
+
 void HistoryExtension::notify(const std::string& message) {
     std::cerr << std::endl << message << std::endl;
 }
@@ -142,6 +150,7 @@ void HistoryExtension::getCommand(bpo::options_description& desc) {
         ("help", "outputs help message")
         ("filesystem", "outputs filesystem's history")
         ("bash", "outputs bash history")
+        ("vim", "outputs vim history")
     ;
 }
 
@@ -158,16 +167,18 @@ Command HistoryExtension::readCommand(const bpo::variables_map& vm,
     std::string command_;
 
     if (vm.count("filesystem"))
-      command_ = "filesystem";
+        command_ = "filesystem";
     else if (vm.count("bash"))
-      command_ = "bash";
+        command_ = "bash";
+    else if (vm.count("vim"))
+        command_ = "vim";
     else if (vm.count("help"))
-      command_ = "help";
+        command_ = "help";
 
     Command command = Commands::parse(command_);
 
     bool isValid = command == filesystem || command == bash ||
-                   command == help;
+                   command == help || command == vim;
 
     if (!isValid) {
       HistoryExtension::notifyCommandError(command_);
@@ -177,7 +188,7 @@ Command HistoryExtension::readCommand(const bpo::variables_map& vm,
     return command;
 }
 
-bfs::path HistoryExtension::getPath(const bpo::variables_map& vm) {
+bfs::path HistoryExtension::getPath() {
     std::string path_ = getenv("HOME");
 
     bfs::path pathToDir(path_);
