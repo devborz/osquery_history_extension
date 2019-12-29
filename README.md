@@ -64,14 +64,46 @@ $ python sources/extension.py --socket /home/${USERNAME}/.osquery/shell.em
 $ #in first shell window:
 $ osqueryi
 Using a virtual database. Need help, type '.help'
+```
+#### Получение истории **Bash**
+```ShellSession
 $ osquery> select * from bash_history;
++------------+-------------------+---------+
+| Time       | Execute directory | Command |
++------------+-------------------+---------+
+|    ...     |         ...       |   ...   |
+
+```
+#### Получение списка истории изменения файлов
+```ShellSession
 $ osquery> select * from filesystem_history;
++----------------+------------+----------+
+| Time           | Path       | Filename |
++----------------+------------+----------+
+|       ...      |      ...   |    ...   |
+
+```
+#### Получение истории командной строки **Vim**
+```
 $ osquery> select * from vim_commandline_history;
++-------------+---------+
+| Time        | Command |
++-------------+---------+
+|   ...       |   ...   |
+
+```
+#### Получение истории сеансов **Vim**
+```ShellSession
 $ osquery> select * from vim_filemarks_history;
++---------+-------------+---------------+--------------+-----------------+
+| Time    | File's path | Filename      | Position row | Position column |
++---------+-------------+---------------+--------------+-----------------+
+|   ...   |      ...    |      ...      |     ...      |       ...       |
+
 $ osquery> .exit
 ```
 
-### Cкачивание необходимых пакетов
+#### Cкачивание необходимых пакетов
 
 ```ShellSession
 $ pip install osquery
