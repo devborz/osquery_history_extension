@@ -61,10 +61,9 @@ Using a virtual database. Need help, type '.help'
 osquery>
 $ #in second shell window:
 $ python sources/extension.py --socket /home/${USERNAME}/.osquery/shell.em
-$ #in first shell window:
-$ osqueryi
-Using a virtual database. Need help, type '.help'
+$ #and going back to first shell window:
 ```
+### Использование расширения
 #### Получение истории **Bash**
 ```ShellSession
 $ osquery> select * from bash_history;
