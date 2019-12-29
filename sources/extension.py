@@ -78,8 +78,8 @@ class vimFileMarksHistoryTablePlugin(osquery.TablePlugin):
             osquery.TableColumn(name="Time", type=osquery.STRING),
             osquery.TableColumn(name="File's path", type=osquery.STRING),
             osquery.TableColumn(name="Filename", type=osquery.STRING),
-            osquery.TableColumn(name="Position Row", type=osquery.STRING),
-            osquery.TableColumn(name="Position Column", type=osquery.STRING),
+            osquery.TableColumn(name="Position row", type=osquery.STRING),
+            osquery.TableColumn(name="Position column", type=osquery.STRING)
         ]
     def generate(self, context):
         query_data = []
@@ -91,8 +91,8 @@ class vimFileMarksHistoryTablePlugin(osquery.TablePlugin):
             row["Time"] = item['time']
             row["File's path"] = item['path']
             row["Filename"] = item['filename']
-            row["Command"] = item['row']
-            row["Command"] = item['column']
+            row["Position row"] = item['row']
+            row["Position column"] = item['column']
             query_data.append(row)
         return query_data
 
