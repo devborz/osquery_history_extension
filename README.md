@@ -14,11 +14,13 @@
 ### Инструкция по использованию расширения
 
 ```ShellSession
-$ osquery> select * from bash_history; #This command outputs bash_history
+$ osquery> select * from bash_history; # outputs bash history
 
-$ osquery> select * from fs_history; #This command outputs fs_history
+$ osquery> select * from filesystem_history; # outputs recently changed files
 
-$ osquery> select * from vim_history; #This command outputs vim_history
+$ osquery> select * from vim_commandline_history; # outputs vim cmd history
+
+$ osquery> select * from vim_filemarks_history; # outputs vim filemarks history
 ```
 ### Инструкция по использованию `_build/extension`
 
@@ -27,9 +29,10 @@ $ _build/extension --help
 
 Options:
   --help                outputs help message
-  --filesystem          outputs filesystem's history
-  --bash                outputs bash history
-  --vim                 outputs vim  history
+  --filesystem          updates filesystem's history
+  --bash                updates bash history's file
+  --vim                 updates vim history's files
+  --all                 updates all history's files
 ```
 
 ### Скачивание
@@ -48,9 +51,7 @@ $ cd osquery_history_extension
 ```ShellSession
 $ cmake -H. -B_build
 $ cmake --build _build
-$ _build/extension --filesystem
-$ _build/extension --bash
-$ _build/extension --vim
+$ _build/extension --all
 ```
 ### Интеграция в OSquery
 ![Alt Text](https://github.com/devborz/osquery_history_extension/blob/master/images/extension-osquery.gif)
@@ -64,8 +65,9 @@ $ #in first shell window:
 $ osqueryi
 Using a virtual database. Need help, type '.help'
 $ osquery> select * from bash_history;
-$ osquery> select * from fs_history;
-$ osquery> select * from vim_history;
+$ osquery> select * from filesystem_history;
+$ osquery> select * from vim_commandline_history;
+$ osquery> select * from vim_filemarks_history;
 $ osquery> .exit
 ```
 
@@ -83,4 +85,4 @@ $ pip install osquery
 - [x] Реализовать проверку настройки bash_history на сохранение времени и директории
 - [x] Реализовать сохрaнение полученных данных в формате `json`
 - [x] Интегрировать в osquery в виде расширения
-- [ ] Добавить возможность получения истории `vim`
+- [x] Добавить возможность получения истории `vim`
