@@ -84,7 +84,7 @@ class vimFileMarksHistoryTablePlugin(osquery.TablePlugin):
     def generate(self, context):
         query_data = []
         home = expanduser("~")
-        input_file = open(home +'/vim_cmd_history.json')
+        input_file = open(home +'/vim_fm_history.json')
         json_array = json.load(input_file)
         for item in json_array:
             row = {}
