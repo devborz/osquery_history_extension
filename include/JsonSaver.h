@@ -12,7 +12,7 @@
 #include <boost/filesystem.hpp>
 #include "ChangedFile.h"
 #include "ExecutedCommand.h"
-#include "Vim.h"
+#include "VimLib.h"
 
 namespace bfs = boost::filesystem;
 

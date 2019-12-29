@@ -31,7 +31,7 @@ add_library(ChangedFile STATIC
 add_library(ExecutedCommand STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/ExecutedCommand.cpp)
 add_library(VimSession STATIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/sources/Vim.cpp)
+  ${CMAKE_CURRENT_SOURCE_DIR}/sources/VimLib.cpp)
 add_library(FilesLib STATIC
   ${CMAKE_CURRENT_SOURCE_DIR}/sources/FilesLib.cpp)
 add_library(OptionsLib STATIC
