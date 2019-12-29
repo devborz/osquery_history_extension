@@ -3,7 +3,7 @@
 void HistoryExtension::work(int argc, char* argv[]) {
 
     bpo::options_description desc;
-    HistoryExtension::getOptions(desc);
+    Options::getOptions(desc);
 
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(argc, argv, desc), vm);
@@ -11,26 +11,39 @@ void HistoryExtension::work(int argc, char* argv[]) {
 
     unsigned int option_ec = 0;
 
-    Option option = HistoryExtension::readOption(vm, option_ec);
+    Option option = Options::readOption(vm, option_ec);
     if (option_ec == 1) {
         return;
     }
 
     switch (option) {
+        case all : {
+            HistoryExtension::getFilesystemHistory();
+
+            HistoryExtension::getBashHistory();
+
+            HistoryExtension::getVimHistory();
+
+            break;
+        }
         case filesystem : {
             HistoryExtension::getFilesystemHistory();
+
             break;
         }
         case bash : {
             HistoryExtension::getBashHistory();
+
             break;
         }
         case vim : {
             HistoryExtension::getVimHistory();
+
             break;
         }
         case help : {
-            HistoryExtension::getHelp(desc);
+            Options::getHelp(desc);
+
             break;
         }
     }
@@ -70,7 +83,7 @@ void HistoryExtension::getBashHistory() {
 
         bashHistory.close();
 
-        if (history.size() != 0) {
+        if (!history.empty()) {
             JsonSaver::saveBashHistory(history);
         }
         else {
@@ -120,7 +133,7 @@ void HistoryExtension::getFilesystemHistory() {
 
         HistoryExtension::iterate(pathToDir, recentlyChangedFiles);
 
-        if (recentlyChangedFiles.size() != 0) {
+        if (!recentlyChangedFiles.empty()) {
 
             Files::sortByTime(recentlyChangedFiles);
 
@@ -157,22 +170,64 @@ void HistoryExtension::getVimHistory() {
             std::getline(viminfo, line);
 
             if (line == commandlineHistoryTitle) {
-                std::string sharp = "#";
+                char sharp = '#';
 
                 std::string command_;
                 std::string info_;
 
-                while (!viminfo.eof() && command_.front() == '#') {
+                while (!viminfo.eof()) {
                     std::getline(viminfo, command_);
                     std::getline(viminfo, info_);
 
-                    VimCommand command = VimCommand::parseCommand(command_,
-                                                                    info_);
+                    if (info_.front() != sharp) {
+                        VimCommand command = VimCommand::parseCommand(command_,
+                                                                        info_);
+                        vimCommands.insert(vimCommands.begin(), command);
+                    }
+                    else {
+                        line  = info_;
+
+                        break;
+                    }
                 }
             }
-            else if (line == fileMarksHistoryTitle) {
+            if (line == fileMarksHistoryTitle) {
+                char sharp = '#';
 
+                std::string line1;
+                std::string line2;
+
+                while (!viminfo.eof()) {
+                    std::getline(viminfo, line1);
+                    std::getline(viminfo, line2);
+
+                    if (line2.front() != sharp) {
+                        VimFileMark fileMark = VimFileMark::parseFileMark(line1,
+                                                                         line2);
+                        vimFileMarks.insert(vimFileMarks.begin(), fileMark);
+                    }
+                    else {
+                        break;
+                    }
+                }
             }
+        }
+        viminfo.close();
+
+        if (!vimCommands.empty()) {
+            JsonSaver::saveVimCommandsHistory(vimCommands);
+        }
+        else {
+            std::string message = "Vim commands history is empty";
+            HistoryExtension::notify(message);
+        }
+
+        if (!vimFileMarks.empty()) {
+            JsonSaver::saveVimFileMarksHistory(vimFileMarks);
+        }
+        else {
+            std::string message = "Vim file marks history is empty";
+            HistoryExtension::notify(message);
         }
     }
     else {
@@ -183,49 +238,6 @@ void HistoryExtension::getVimHistory() {
 
 void HistoryExtension::notify(const std::string& message) {
     std::cerr << std::endl << message << std::endl;
-}
-
-void HistoryExtension::getOptions(bpo::options_description& desc) {
-    desc.add_options()
-        ("help", "outputs help message")
-        ("filesystem", "outputs filesystem's history")
-        ("bash", "outputs bash history")
-        ("vim", "outputs vim history")
-    ;
-}
-
-void HistoryExtension::notifyOptionError(const std::string& option) {
-    std::cerr << "Option \'" << option << "\' does not exist. See 'help'\n";
-}
-
-void HistoryExtension::getHelp(bpo::options_description& desc) {
-    std::cout << "\nOptions:\n" << desc << std::endl;
-}
-
-Option HistoryExtension::readOption(const bpo::variables_map& vm,
-                                      unsigned int& ec) {
-    std::string option_;
-
-    if (vm.count("filesystem"))
-        option_ = "filesystem";
-    else if (vm.count("bash"))
-        option_ = "bash";
-    else if (vm.count("vim"))
-        option_ = "vim";
-    else if (vm.count("help"))
-        option_ = "help";
-
-    Option option = Options::parse(option_);
-
-    bool isValid = option == filesystem || option == bash ||
-                   option == help || option == vim;
-
-    if (!isValid) {
-      HistoryExtension::notifyOptionError(option_);
-      ec = 1;
-    }
-
-    return option;
 }
 
 bfs::path HistoryExtension::getPath() {

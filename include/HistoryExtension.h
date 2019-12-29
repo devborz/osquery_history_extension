@@ -36,19 +36,7 @@ private:
     static void iterate(bfs::path, std::vector<ChangedFile>& list);
 
 
-    static void getOptions(bpo::options_description&);
-
-
-    static void notifyOptionError(const std::string&);
-
-
     static void notify(const std::string&);
-
-
-    static void getHelp(bpo::options_description& desc);
-
-
-    static Option readOption(const bpo::variables_map&, unsigned int&);
 
 
     static bfs::path getPath();

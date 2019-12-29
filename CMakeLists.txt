@@ -76,7 +76,7 @@ target_link_libraries(ExecutedCommand Boost::filesystem Boost::system)
 target_link_libraries(ChangedFile Boost::filesystem Boost::system)
 target_link_libraries(JsonSaver Boost::filesystem Boost::system
 nlohmann_json::nlohmann_json ChangedFile ExecutedCommand VimLib)
-target_link_libraries(OptionsLib)
+target_link_libraries(OptionsLib Boost::program_options)
 target_link_libraries(FilesLib Boost::filesystem Boost::system ChangedFile)
 target_link_libraries(HistoryExtension FilesLib OptionsLib Boost::filesystem
 Boost::system Boost::program_options JsonSaver ChangedFile ExecutedCommand

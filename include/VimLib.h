@@ -10,10 +10,16 @@ class VimCommand {
 public:
     VimCommand(const std::string&, const std::time_t);
 
-    static VimCommand parseCommand(
-                        const std::string&,
-                        const std::string&
-                      );
+    VimCommand(const VimCommand& command);
+
+    VimCommand& operator=(const VimCommand& command);
+
+    std::string  getCommand();
+
+    std::time_t  getTime();
+
+    static VimCommand parseCommand(const std::string&,
+                                   const std::string&);
 
 private:
     std::string command_;
@@ -22,19 +28,27 @@ private:
 
 class VimFileMark {
 public:
-    VimFileMark(
-                const std::string&,
+    VimFileMark(const std::string&,
                 const bfs::path&,
                 const std::time_t&,
                 const unsigned int&,
-                const unsigned int&
-                );
+                const unsigned int&);
 
+    VimFileMark(const VimFileMark& fileMark);
 
-    static VimFileMark parseFileMark(
-                        const std::string&,
-                        const std::string&
-                      );
+    VimFileMark& operator=(const VimFileMark& fileMark);
+
+    static VimFileMark parseFileMark(const std::string&,
+                                     const std::string&);
+    std::string  getFileName();
+
+    std::time_t  getTime();
+
+    bfs::path    getPath();
+
+    unsigned int getRow();
+
+    unsigned int getColumn();
 
 private:
     bfs::path path_;
