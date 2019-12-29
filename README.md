@@ -73,7 +73,7 @@ $ osquery> select * from bash_history;
 |    ...     |         ...       |   ...   |
 
 ```
-#### Получение списка истории изменения файлов
+#### Получение истории изменения файлов
 ```ShellSession
 $ osquery> select * from filesystem_history;
 +----------------+------------+----------+
