@@ -11,7 +11,7 @@
 #include <vector>
 #include "ChangedFile.h"
 #include "ExecutedCommand.h"
-#include "VimSession.h"
+#include "Vim.h"
 #include "FilesLib.h"
 #include "OptionsLib.h"
 #include "JsonSaver.h"

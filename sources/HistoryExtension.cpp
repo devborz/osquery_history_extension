@@ -136,15 +136,43 @@ void HistoryExtension::getFilesystemHistory() {
 }
 
 void HistoryExtension::getVimHistory() {
-    std::vector<VimSession> vimSessions;
+    std::vector<VimCommand> vimCommands;
+    std::vector<VimFileMark> vimFileMarks;
 
     std::string pathToFile = getenv("HOME") + std::string("/.viminfo");
 
     std::ifstream viminfo(pathToFile);
 
     if (viminfo.is_open()) {
-        while (!viminfo.eof()) {
+        bool readingCommandlineHistory = false;
+        bool readingFileMarksHistory = false;
 
+        std::string commandlineHistoryTitle =
+                                   "# Command Line History (newest to oldest):";
+
+        std::string fileMarksHistoryTitle = "# File marks:";
+
+        while (!viminfo.eof()) {
+            std::string line;
+            std::getline(viminfo, line);
+
+            if (line == commandlineHistoryTitle) {
+                std::string sharp = "#";
+
+                std::string command_;
+                std::string info_;
+
+                while (!viminfo.eof() && command_.front() == '#') {
+                    std::getline(viminfo, command_);
+                    std::getline(viminfo, info_);
+
+                    VimCommand command = VimCommand::parseCommand(command_,
+                                                                    info_);
+                }
+            }
+            else if (line == fileMarksHistoryTitle) {
+
+            }
         }
     }
     else {

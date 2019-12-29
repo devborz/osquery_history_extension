@@ -12,7 +12,7 @@
 #include <boost/filesystem.hpp>
 #include "ChangedFile.h"
 #include "ExecutedCommand.h"
-#include "VimSession.h"
+#include "Vim.h"
 
 namespace bfs = boost::filesystem;
 
@@ -22,5 +22,7 @@ public:
 
     static void saveFilesystemHistory(std::vector<ChangedFile>&);
 
-    static void saveVimHistory(std::vector<VimSession>&);
+    static void saveVimCommandsHistory(std::vector<VimCommand>&);
+
+    static void saveVimFileMarksHistory(std::vector<VimFileMark>&);
 };
