@@ -118,11 +118,7 @@ void JsonSaver::saveVimFileMarksHistory(std::vector<VimFileMark>& history) {
     if (out.is_open()) {
         nlohmann::json files = nlohmann::json::array();
 
-        unsigned int start = 0;
-        if (history.size() >= 10) {
-            start =  history.size() - 10;
-        }
-        for (unsigned int i = start; i < history.size(); i++) {
+        for (unsigned int i = 0; i < history.size(); i++) {
             std::time_t t = history[i].getTime();
 
             std::string time = std::asctime(std::localtime(&t));
