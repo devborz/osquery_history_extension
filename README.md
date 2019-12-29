@@ -84,7 +84,7 @@ $ osquery> select * from filesystem_history;
 
 ```
 #### Получение истории командной строки **Vim**
-```
+```ShellSession
 $ osquery> select * from vim_commandline_history;
 +-------------+---------+
 | Time        | Command |
