@@ -11,40 +11,42 @@ void HistoryExtension::work(int argc, char* argv[]) {
 
     unsigned int option_ec = 0;
 
-    Option option = Options::readOption(vm, option_ec);
+    std::shared_ptr<std::vector<Option>> options =
+                                            Options::readOption(vm, option_ec);
     if (option_ec == 1) {
         return;
     }
+    for (const auto& opt: *options) {
+        switch (opt) {
+            case all : {
+                HistoryExtension::getFilesystemHistory();
 
-    switch (option) {
-        case all : {
-            HistoryExtension::getFilesystemHistory();
+                HistoryExtension::getBashHistory();
 
-            HistoryExtension::getBashHistory();
+                HistoryExtension::getVimHistory();
 
-            HistoryExtension::getVimHistory();
+                break;
+            }
+            case filesystem : {
+                HistoryExtension::getFilesystemHistory();
 
-            break;
-        }
-        case filesystem : {
-            HistoryExtension::getFilesystemHistory();
+                break;
+            }
+            case bash : {
+                HistoryExtension::getBashHistory();
 
-            break;
-        }
-        case bash : {
-            HistoryExtension::getBashHistory();
+                break;
+            }
+            case vim : {
+                HistoryExtension::getVimHistory();
 
-            break;
-        }
-        case vim : {
-            HistoryExtension::getVimHistory();
+                break;
+            }
+            case help : {
+                Options::getHelp(desc);
 
-            break;
-        }
-        case help : {
-            Options::getHelp(desc);
-
-            break;
+                break;
+            }
         }
     }
 }

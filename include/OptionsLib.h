@@ -3,6 +3,7 @@
 #include <boost/program_options.hpp>
 #include <iostream>
 #include <string>
+#include <vector>
 #include <map>
 
 namespace bpo = boost::program_options;
@@ -29,5 +30,7 @@ public:
     static void getHelp(bpo::options_description& desc);
 
 
-    static Option readOption(const bpo::variables_map&, unsigned int&);
+    static std::shared_ptr<std::vector<Option>> readOption(
+                                            const bpo::variables_map&,
+                                            unsigned int&);
 };

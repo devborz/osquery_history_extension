@@ -20,32 +20,51 @@ void Options::getHelp(bpo::options_description& desc) {
     std::cout << "\nOptions:\n" << desc << std::endl;
 }
 
-Option Options::readOption(const bpo::variables_map& vm,
-                                    unsigned int& ec) {
+std::shared_ptr<std::vector<Option>> Options::readOption(
+                                        const bpo::variables_map& vm,
+                                        unsigned int& ec) {
     std::string option_;
+    std::shared_ptr<std::vector <Option>> enabledOptions(new
+                                                        std::vector<Option>());
+    if (vm.count("help")) {
+        Option option = help;
+        enabledOptions.get()->push_back(option);
+    }
+    else if (vm.count("all")) {
+        Option option = filesystem;
+        enabledOptions.get()->push_back(option);
+    }
+    else {
+        if (vm.count("filesystem")) {
+            Option option = filesystem;
+            enabledOptions.get()->push_back(option);
+        }
+        if (vm.count("bash")) {
+            Option option = bash;
+            enabledOptions.get()->push_back(option);
+        }
+        if (vm.count("vim")) {
+            Option option = vim;
+            enabledOptions.get()->push_back(option);
+        }
 
-    if (vm.count("filesystem"))
-        option_ = "filesystem";
-    else if (vm.count("bash"))
-        option_ = "bash";
-    else if (vm.count("vim"))
-        option_ = "vim";
-    else if (vm.count("help"))
-        option_ = "help";
-    else if (vm.count("all"))
-        option_ = "all";
+    }
+    //Option option = Options::parse(option_);
 
-    Option option = Options::parse(option_);
+    // bool isValid = option == filesystem || option == bash ||
+    //                option == help || option == vim || option == all;
 
-    bool isValid = option == filesystem || option == bash ||
-                   option == help || option == vim || option == all;
+    // if (!isValid) {
+    //   Options::notifyOptionError(option_);
+    //   ec = 1;
+    // }
 
-    if (!isValid) {
-      Options::notifyOptionError(option_);
-      ec = 1;
+    if (enabledOptions.get()->empty()) {
+        notifyOptionError(" ");
+        ec = 1;
     }
 
-    return option;
+    return enabledOptions;
 }
 
 void Options::getOptions(bpo::options_description& desc) {
