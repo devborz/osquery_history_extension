@@ -49,15 +49,6 @@ std::shared_ptr<std::vector<Option>> Options::readOption(
         }
 
     }
-    //Option option = Options::parse(option_);
-
-    // bool isValid = option == filesystem || option == bash ||
-    //                option == help || option == vim || option == all;
-
-    // if (!isValid) {
-    //   Options::notifyOptionError(option_);
-    //   ec = 1;
-    // }
 
     if (enabledOptions.get()->empty()) {
         notifyOptionError(" ");
