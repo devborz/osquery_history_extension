@@ -83,7 +83,9 @@ $ osquery> select * from filesystem_history;
 |       ...      |      ...   |    ...   |
 
 ```
-#### Получение истории командной строки **Vim**
+#### Получение истории **Vim**
+![Alt Text](https://github.com/devborz/osquery_history_extension/blob/master/images/extension-vim-history.gif)
+##### История командной строки **Vim**
 ```ShellSession
 $ osquery> select * from vim_commandline_history;
 +-------------+---------+
@@ -92,7 +94,7 @@ $ osquery> select * from vim_commandline_history;
 |   ...       |   ...   |
 
 ```
-#### Получение истории сеансов **Vim**
+##### История сеансов **Vim**
 ```ShellSession
 $ osquery> select * from vim_filemarks_history;
 +---------+-------------+----------+--------------+-----------------+
