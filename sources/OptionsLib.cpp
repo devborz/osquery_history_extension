@@ -31,7 +31,7 @@ std::shared_ptr<std::vector<Option>> Options::readOption(
         enabledOptions.get()->push_back(option);
     }
     else if (vm.count("all")) {
-        Option option = filesystem;
+        Option option = all;
         enabledOptions.get()->push_back(option);
     }
     else {
