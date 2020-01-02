@@ -37,17 +37,14 @@ Options:
 ### Downoloading
 
 ```ShellSession
-$ cat > ~/.profile << EOF
->
-> export PROMPT_COMMAND='if [ "$(id -u)" -ne 0 ]; then echo "$(date "+%Y-%m-%d.%H:%M:%S") $(pwd) $(history 1)"
-> >> ~/bash-history.log; fi'
-> EOF
 $ git clone https://github.com/devborz/osquery_history_extension
 $ cd osquery_history_extension
 ```
 ### Building and data updating
 ![Alt Text](https://github.com/devborz/osquery_history_extension/blob/master/images/extension-building-saving.gif)
 ```ShellSession
+$ chmod +x config/config.sh
+$ ./config/config.sh
 $ cmake -H. -B_build
 $ cmake --build _build
 $ _build/extension --all
