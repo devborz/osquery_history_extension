@@ -1,18 +1,16 @@
 [![Build Status](https://travis-ci.com/devborz/osquery_history_extension.svg?token=rrbTiACLSyD7Yjcuyygg&branch=master)](https://travis-ci.com/devborz/osquery_history_extension)
 
-# OSquery History Extension
+# Osquery History Extension
 
-Данное расширение предоставляет пользователю возможность просмотра истории
-своих действий на компьютере (OS Linux)
+This extension allows the user to view the history of their actions on a computer (Linux OS)
 
-### Функции
+### Functions
 
-* Предоставление пользователю истории командной строки **Bash**
-* Предоставление пользователю списка измененных файлов
-* Предоставление пользователю истории **Vim** (история команд
-    и истор открытия файлов)
+* Providing the user with **Bash** command line history
+* Providing the user with a list of modified files
+* Providing the user with **Vim** history (command history and file opening history)
 
-### Инструкция по использованию расширения
+### User Guide
 
 ```ShellSession
 $ osquery> select * from bash_history; # outputs bash history
@@ -23,7 +21,7 @@ $ osquery> select * from vim_commandline_history; # outputs vim cmd history
 
 $ osquery> select * from vim_filemarks_history; # outputs vim filemarks history
 ```
-### Инструкция по использованию `_build/extension`
+### `_build/extension` options
 
 ```ShellSession
 $ _build/extension --help
@@ -36,7 +34,7 @@ Options:
   --all                 updates all history's files
 ```
 
-### Скачивание
+### Downoloading
 
 ```ShellSession
 $ cat > ~/.profile << EOF
@@ -47,14 +45,14 @@ $ cat > ~/.profile << EOF
 $ git clone https://github.com/devborz/osquery_history_extension
 $ cd osquery_history_extension
 ```
-### Сборка и обновление данных
+### Building and data updating
 ![Alt Text](https://github.com/devborz/osquery_history_extension/blob/master/images/extension-building-saving.gif)
 ```ShellSession
 $ cmake -H. -B_build
 $ cmake --build _build
 $ _build/extension --all
 ```
-### Интеграция в OSquery
+### Osquery integration
 ![Alt Text](https://github.com/devborz/osquery_history_extension/blob/master/images/extension-osquery.gif)
 ```ShellSession
 $ osqueryi
@@ -64,8 +62,8 @@ $ #in second shell window:
 $ python sources/extension.py --socket /home/${USERNAME}/.osquery/shell.em
 $ #and going back to first shell window:
 ```
-### Использование расширения
-#### Получение истории **Bash**
+### Using extension
+#### Getting **Bash** history
 ```ShellSession
 $ osquery> select * from bash_history;
 +------------+-------------------+---------+
@@ -74,7 +72,7 @@ $ osquery> select * from bash_history;
 |    ...     |         ...       |   ...   |
 
 ```
-#### Получение истории изменения файлов
+#### Getting file change history
 ```ShellSession
 $ osquery> select * from filesystem_history;
 +----------------+------------+----------+
@@ -83,9 +81,9 @@ $ osquery> select * from filesystem_history;
 |       ...      |      ...   |    ...   |
 
 ```
-#### Получение истории **Vim**
+#### Getting **Vim** history
 ![Alt Text](https://github.com/devborz/osquery_history_extension/blob/master/images/extension-vim-history.gif)
-##### История командной строки **Vim**
+##### **Vim** command line history 
 ```ShellSession
 $ osquery> select * from vim_commandline_history;
 +-------------+---------+
@@ -94,7 +92,7 @@ $ osquery> select * from vim_commandline_history;
 |   ...       |   ...   |
 
 ```
-##### История сеансов **Vim**
+##### **Vim** session history
 ```ShellSession
 $ osquery> select * from vim_filemarks_history;
 +---------+-------------+----------+--------------+-----------------+
@@ -104,18 +102,17 @@ $ osquery> select * from vim_filemarks_history;
 
 ```
 
-#### Cкачивание необходимых пакетов
+#### Download required packages
 
 ```ShellSession
 $ pip install osquery
 ```
 ### Tasks
 
-- [x] Настроить program_options
-- [x] Реализовать получение истории `bash`
-- [x] Реализовать получение истории изменения файлов
-- [x] Реализовать сортировку по дате
-- [x] Реализовать проверку настройки bash_history на сохранение времени и директории
-- [x] Реализовать сохрaнение полученных данных в формате `json`
-- [x] Интегрировать в osquery в виде расширения
-- [x] Добавить возможность получения истории `vim`
+- [x] Set program_options
+- [x] Implement **bash** history option
+- [x] Implement file change history option
+- [x] Implement sorting by date
+- [x] Implement data storage in **json** format
+- [x] Integrate into **osquery** as an extension
+- [x] Add **vim** history option
