@@ -40,11 +40,14 @@ Options:
 $ git clone https://github.com/devborz/osquery_history_extension
 $ cd osquery_history_extension
 ```
+### Configuring
+```ShellSession
+$ chmod +x config/config.sh # configs ~/.profile to save bash history 
+$ ./config/config.sh # with time and path of command
+```
 ### Building and data updating
 ![Alt Text](https://github.com/devborz/osquery_history_extension/blob/master/images/extension-building-saving.gif)
 ```ShellSession
-$ chmod +x config/config.sh
-$ ./config/config.sh
 $ cmake -H. -B_build
 $ cmake --build _build
 $ _build/extension --all
