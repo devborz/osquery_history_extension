@@ -12,7 +12,7 @@
 #include "ChangedFile.h"
 #include "ExecutedCommand.h"
 #include "FilesLib.h"
-#include "JsonSaver.h"
+#include "JsonSerializer.h"
 #include "OptionsLib.h"
 #include "VimLib.h"
 

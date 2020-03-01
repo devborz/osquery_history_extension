@@ -79,7 +79,7 @@ void HistoryExtension::getBashHistory() {
     bashHistory.close();
 
     if (!history.empty()) {
-      JsonSaver::saveBashHistory(history);
+      JsonSerializer::saveBashHistory(history);
     } else {
       char message[] = "The bash history is empty";
       HistoryExtension::notify(std::string(message));
@@ -121,7 +121,7 @@ void HistoryExtension::getFilesystemHistory() {
     if (!recentlyChangedFiles.empty()) {
       Files::sortByTime(recentlyChangedFiles);
 
-      JsonSaver::saveFilesystemHistory(recentlyChangedFiles);
+      JsonSerializer::saveFilesystemHistory(recentlyChangedFiles);
     } else {
       std::string message = "There are no changed files for this period";
 
@@ -193,14 +193,14 @@ void HistoryExtension::getVimHistory() {
     viminfo.close();
 
     if (!vimCommands.empty()) {
-      JsonSaver::saveVimCommandsHistory(vimCommands);
+      JsonSerializer::saveVimCommandsHistory(vimCommands);
     } else {
       std::string message = "Vim commands history is empty";
       HistoryExtension::notify(message);
     }
 
     if (!vimFileMarks.empty()) {
-      JsonSaver::saveVimFileMarksHistory(vimFileMarks);
+      JsonSerializer::saveVimFileMarksHistory(vimFileMarks);
     } else {
       std::string message = "Vim file marks history is empty";
       HistoryExtension::notify(message);
