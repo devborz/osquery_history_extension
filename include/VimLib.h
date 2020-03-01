@@ -1,63 +1,60 @@
 #pragma once
+#include <boost/filesystem.hpp>
+#include <chrono>
 #include <iostream>
 #include <string>
-#include <chrono>
-#include <boost/filesystem.hpp>
 
 namespace bfs = boost::filesystem;
 
 class VimCommand {
-public:
-    VimCommand(const std::string&, const std::time_t);
+ public:
+  VimCommand(const std::string&, const std::time_t);
 
-    VimCommand(const VimCommand& command);
+  VimCommand(const VimCommand& command);
 
-    VimCommand& operator=(const VimCommand& command);
+  VimCommand& operator=(const VimCommand& command);
 
-    std::string  getCommand();
+  inline std::string getCommand() { return this->command_; }
 
-    std::time_t  getTime();
+  inline std::time_t getTime() { return this->time_; }
 
-    static VimCommand parseCommand(const std::string&,
-                                   const std::string&);
+  static VimCommand parseCommand(const std::string&, const std::string&);
 
-private:
-    std::string command_;
-    std::time_t time_;
+ private:
+  std::string command_;
+
+  std::time_t time_;
 };
 
 class VimFileMark {
-public:
-    VimFileMark(const std::string&,
-                const bfs::path&,
-                const std::time_t&,
-                const unsigned int&,
-                const unsigned int&);
+ public:
+  VimFileMark(const std::string&, const bfs::path&, const std::time_t&,
+              const unsigned int&, const unsigned int&);
 
-    VimFileMark(const VimFileMark& fileMark);
+  VimFileMark(const VimFileMark& fileMark);
 
-    VimFileMark& operator=(const VimFileMark& fileMark);
+  VimFileMark& operator=(const VimFileMark& fileMark);
 
-    static VimFileMark parseFileMark(const std::string&,
-                                     const std::string&);
-    std::string  getFileName();
+  static VimFileMark parseFileMark(const std::string&, const std::string&);
 
-    std::time_t  getTime();
+  inline std::string getFileName() { return this->filename_; }
 
-    bfs::path    getPath();
+  inline std::time_t getTime() { return this->time_; }
 
-    unsigned int getRow();
+  inline bfs::path getPath() { return this->path_; }
 
-    unsigned int getColumn();
+  inline unsigned int getRow() { return this->posRow_; }
 
-private:
-    bfs::path path_;
+  inline unsigned int getColumn() { return this->posCol_; }
 
-    std::string filename_;
+ private:
+  bfs::path path_;
 
-    std::time_t time_;
+  std::string filename_;
 
-    unsigned int posRow_;
+  std::time_t time_;
 
-    unsigned int posCol_;
+  unsigned int posRow_;
+
+  unsigned int posCol_;
 };
