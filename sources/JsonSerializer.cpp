@@ -100,7 +100,8 @@ void JsonSerializer::saveVimCommandsHistory(std::vector<VimCommand>& history) {
   }
 }
 
-void JsonSerializer::saveVimFileMarksHistory(std::vector<VimFileMark>& history) {
+void JsonSerializer::saveVimFileMarksHistory(
+    std::vector<VimFileMark>& history) {
   std::string home = getenv("HOME");
 
   std::ofstream out(home + "/vim_fm_history.json",
