@@ -1,28 +1,27 @@
 #pragma once
-#include <iostream>
-#include <string>
+#include <boost/filesystem.hpp>
 #include <chrono>
 #include <ctime>
-#include <boost/filesystem.hpp>
+#include <iostream>
+#include <string>
 
 namespace bfs = boost::filesystem;
 
 class ChangedFile {
-public:
-    ChangedFile(const std::string& fileName,
-                const bfs::path& path,
-                const std::time_t& time);
+ public:
+  ChangedFile(const std::string& fileName, const bfs::path& path,
+              const std::time_t& time);
 
-    std::string getFileName();
+  inline std::string getFileName() { return this->fileName_; }
 
-    bfs::path   getPath();
+  inline bfs::path getPath() { return this->path_; }
 
-    std::time_t getTime();
+  inline std::time_t getTime() { return this->time_; }
 
-private:
-    std::string fileName_;
+ private:
+  std::string fileName_;
 
-    bfs::path   path_;
+  bfs::path path_;
 
-    std::time_t time_;
+  std::time_t time_;
 };
