@@ -1,36 +1,34 @@
 #pragma once
+#include <boost/filesystem.hpp>
+#include <chrono>
 #include <iostream>
 #include <string>
-#include <chrono>
-#include <boost/filesystem.hpp>
 
 namespace bfs = boost::filesystem;
 
 class ExecutedCommand {
-public:
-    ExecutedCommand(const std::string& command,
-                    const bfs::path& path,
-                    const std::time_t& time);
+ public:
+  ExecutedCommand(const std::string& command, const bfs::path& path,
+                  const std::time_t& time);
 
-    std::string getCommand();
+  inline std::string getCommand() { return this->command_; }
 
-    bfs::path   getPath();
+  inline bfs::path getPath() { return this->path_; }
 
-    std::time_t getTime();
+  inline std::time_t getTime() { return this->time_; }
 
-    static bool parseEvent(std::string&, std::string&,
-                           bfs::path&, std::time_t&);
+  static bool parseEvent(std::string&, std::string&, bfs::path&, std::time_t&);
 
-private:
-    static bool isTime(const std::string& time);
+ private:
+  static bool isTime(const std::string& time);
 
-    static unsigned int findSpace(const std::string&);
+  static unsigned int findSpace(const std::string&);
 
-    static unsigned int findSpace(const std::string&, const unsigned int&);
+  static unsigned int findSpace(const std::string&, const unsigned int&);
 
-    std::string command_;
+  std::string command_;
 
-    bfs::path   path_;
+  bfs::path path_;
 
-    std::time_t time_;
+  std::time_t time_;
 };
