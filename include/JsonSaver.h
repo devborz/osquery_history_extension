@@ -1,15 +1,15 @@
 #pragma once
+#include <stdio.h>
+#include <boost/filesystem.hpp>
+#include <chrono>
+#include <ctime>
 #include <fstream>
 #include <iomanip>
-#include <chrono>
-#include <stdio.h>
-#include <ctime>
-#include <map>
-#include <vector>
-#include <string>
 #include <iostream>
+#include <map>
 #include <nlohmann/json.hpp>
-#include <boost/filesystem.hpp>
+#include <string>
+#include <vector>
 #include "ChangedFile.h"
 #include "ExecutedCommand.h"
 #include "VimLib.h"
@@ -17,12 +17,12 @@
 namespace bfs = boost::filesystem;
 
 class JsonSaver {
-public:
-    static void saveBashHistory(std::vector<ExecutedCommand>&);
+ public:
+  static void saveBashHistory(std::vector<ExecutedCommand>&);
 
-    static void saveFilesystemHistory(std::vector<ChangedFile>&);
+  static void saveFilesystemHistory(std::vector<ChangedFile>&);
 
-    static void saveVimCommandsHistory(std::vector<VimCommand>&);
+  static void saveVimCommandsHistory(std::vector<VimCommand>&);
 
-    static void saveVimFileMarksHistory(std::vector<VimFileMark>&);
+  static void saveVimFileMarksHistory(std::vector<VimFileMark>&);
 };
